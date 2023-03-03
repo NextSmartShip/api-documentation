@@ -16,6 +16,778 @@ servers:
         default: v1
 paths:
   /oms/v1/outbound-orders:
+    get:
+      tags:
+        - order
+      summary: batch_query_outbound_order order
+      operationId: order#batch_query_outbound_order#1
+      parameters:
+        - name: order_numbers
+          in: query
+          description: order number
+          allowEmptyValue: true
+          schema:
+            type: array
+            items:
+              type: string
+              example: Ipsa non pariatur modi.
+            description: order number
+            example:
+              - xxx1234
+            maxItems: 50
+          example:
+            - xxx1234
+        - name: status
+          in: query
+          description: status
+          allowEmptyValue: true
+          schema:
+            type: integer
+            description: status
+            example: 1
+            minimum: 0
+            maximum: 100
+          example: 1
+        - name: current
+          in: query
+          description: current
+          allowEmptyValue: true
+          schema:
+            type: integer
+            description: current
+            example: 1
+            minimum: 1
+          example: 1
+        - name: page_size
+          in: query
+          description: page_size
+          allowEmptyValue: true
+          schema:
+            type: integer
+            description: page_size
+            example: 1
+            minimum: 1
+          example: 1
+      responses:
+        "200":
+          description: OK response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderRsp'
+              example:
+                code: 0
+                data:
+                  list:
+                    - cancel_status: 1
+                      channel_id: 1
+                      channel_name: SF
+                      created_at: Qui dolores modi corporis qui.
+                      customer_code: Possimus quos.
+                      customer_order_id: xxx1234
+                      fee_info:
+                        actual_weight: 1000
+                        charge_weight: 1000
+                        currency: USD
+                        fuel_fee: 5
+                        fulfillment_fee: 3
+                        handling_fee: 5
+                        max_normal_days: 1607265350
+                        min_normal_days: 1149943555
+                        misc_fee: 5
+                        package_fee: 5
+                        processing_fee: 5
+                        registration_fee: 5
+                        total_price: 1
+                        vat: 5
+                        volume_factor: 149724400
+                        volume_weight: 1000
+                      hold_reason:
+                        - code: 2035502774
+                          en_reason: Accusamus ut doloremque praesentium ea nesciunt.
+                          product_id: 4830887142123847081
+                          reason: Aut autem totam.
+                          type: At delectus deleniti delectus.
+                        - code: 2035502774
+                          en_reason: Accusamus ut doloremque praesentium ea nesciunt.
+                          product_id: 4830887142123847081
+                          reason: Aut autem totam.
+                          type: At delectus deleniti delectus.
+                        - code: 2035502774
+                          en_reason: Accusamus ut doloremque praesentium ea nesciunt.
+                          product_id: 4830887142123847081
+                          reason: Aut autem totam.
+                          type: At delectus deleniti delectus.
+                      hold_status: false
+                      inbound_order_number: Optio rerum amet est consequatur illum.
+                      items:
+                        - declared_cn_name: NSS
+                          declared_en_name: NSS
+                          declared_value_in_eur: 10.07
+                          declared_value_in_usd: 10.07
+                          ext_order_item_id: Quo rerum.
+                          ext_product_id: Aut consequatur.
+                          hs_code: xxx
+                          id: 123
+                          images:
+                            - Voluptates ipsa accusamus sed eum qui autem.
+                            - Rerum quod commodi sapiente aut nam recusandae.
+                            - Esse consequatur quia autem voluptatem laboriosam iste.
+                            - Quo praesentium ipsam quidem qui voluptatem.
+                          listing_qty: 1
+                          material: ""
+                          platform_product_id: 4688370480807507131
+                          product_attributes:
+                            - battery
+                            - cosmetic
+                            - liquid
+                            - magnetic
+                          product_barcode: xxx
+                          product_height: 10
+                          product_id: 123
+                          product_length: 10
+                          product_name: NSS mate40
+                          product_price: 10.3
+                          product_sku: xxxx
+                          product_weight: 10
+                          product_width: 10
+                          purpose: ""
+                          qty: 1
+                          requires_shipping: true
+                        - declared_cn_name: NSS
+                          declared_en_name: NSS
+                          declared_value_in_eur: 10.07
+                          declared_value_in_usd: 10.07
+                          ext_order_item_id: Quo rerum.
+                          ext_product_id: Aut consequatur.
+                          hs_code: xxx
+                          id: 123
+                          images:
+                            - Voluptates ipsa accusamus sed eum qui autem.
+                            - Rerum quod commodi sapiente aut nam recusandae.
+                            - Esse consequatur quia autem voluptatem laboriosam iste.
+                            - Quo praesentium ipsam quidem qui voluptatem.
+                          listing_qty: 1
+                          material: ""
+                          platform_product_id: 4688370480807507131
+                          product_attributes:
+                            - battery
+                            - cosmetic
+                            - liquid
+                            - magnetic
+                          product_barcode: xxx
+                          product_height: 10
+                          product_id: 123
+                          product_length: 10
+                          product_name: NSS mate40
+                          product_price: 10.3
+                          product_sku: xxxx
+                          product_weight: 10
+                          product_width: 10
+                          purpose: ""
+                          qty: 1
+                          requires_shipping: true
+                        - declared_cn_name: NSS
+                          declared_en_name: NSS
+                          declared_value_in_eur: 10.07
+                          declared_value_in_usd: 10.07
+                          ext_order_item_id: Quo rerum.
+                          ext_product_id: Aut consequatur.
+                          hs_code: xxx
+                          id: 123
+                          images:
+                            - Voluptates ipsa accusamus sed eum qui autem.
+                            - Rerum quod commodi sapiente aut nam recusandae.
+                            - Esse consequatur quia autem voluptatem laboriosam iste.
+                            - Quo praesentium ipsam quidem qui voluptatem.
+                          listing_qty: 1
+                          material: ""
+                          platform_product_id: 4688370480807507131
+                          product_attributes:
+                            - battery
+                            - cosmetic
+                            - liquid
+                            - magnetic
+                          product_barcode: xxx
+                          product_height: 10
+                          product_id: 123
+                          product_length: 10
+                          product_name: NSS mate40
+                          product_price: 10.3
+                          product_sku: xxxx
+                          product_weight: 10
+                          product_width: 10
+                          purpose: ""
+                          qty: 1
+                          requires_shipping: true
+                        - declared_cn_name: NSS
+                          declared_en_name: NSS
+                          declared_value_in_eur: 10.07
+                          declared_value_in_usd: 10.07
+                          ext_order_item_id: Quo rerum.
+                          ext_product_id: Aut consequatur.
+                          hs_code: xxx
+                          id: 123
+                          images:
+                            - Voluptates ipsa accusamus sed eum qui autem.
+                            - Rerum quod commodi sapiente aut nam recusandae.
+                            - Esse consequatur quia autem voluptatem laboriosam iste.
+                            - Quo praesentium ipsam quidem qui voluptatem.
+                          listing_qty: 1
+                          material: ""
+                          platform_product_id: 4688370480807507131
+                          product_attributes:
+                            - battery
+                            - cosmetic
+                            - liquid
+                            - magnetic
+                          product_barcode: xxx
+                          product_height: 10
+                          product_id: 123
+                          product_length: 10
+                          product_name: NSS mate40
+                          product_price: 10.3
+                          product_sku: xxxx
+                          product_weight: 10
+                          product_width: 10
+                          purpose: ""
+                          qty: 1
+                          requires_shipping: true
+                      mode: 158171744064274954
+                      not_accept_platform_update: true
+                      not_accept_platform_update_item: true
+                      note: Iusto aut aut ut velit sequi nemo.
+                      nss_tracking_number: Quia est aut dolorem vel eaque.
+                      nss_tracking_url: Nam accusamus est.
+                      offline: true
+                      order_number: "123"
+                      platform: shopify
+                      platform_info:
+                        cancelled_at: "2020-01-01 00:00:00"
+                        closed_at: "2020-01-01 00:00:00"
+                        created_at: Quia sed ut itaque aut.
+                        fulfillment_status: fulfillment
+                        not_accept_update: true
+                        order_id: 12344xxx
+                        order_link: Perferendis voluptas fugit blanditiis harum.
+                        order_no: platform order no
+                        paid_status: Paid
+                        platform_status: pending
+                        tags:
+                          - Quo eligendi libero vero consectetur beatae neque.
+                          - Dolores est animi ipsa recusandae cumque aut.
+                          - Quia error quas eum ea quisquam.
+                      receiver_info:
+                        address1: address1
+                        address2: address2
+                        certificate_code: "3455233"
+                        certificate_period: "2028-01-01"
+                        certificate_type: ID
+                        city_name: SZ
+                        company: China
+                        country_code: US
+                        country_name: US
+                        email: 123@test.com
+                        first_name: He
+                        last_name: John
+                        name: He
+                        phone_number: 150xxxxxxxx
+                        state_code: S
+                        state_name: U
+                        zip_code: "10016"
+                      remark: Aut eos natus libero cupiditate.
+                      request_shipping_at: Sequi aut dolorem veniam.
+                      ship_date: Id eaque.
+                      status: 1
+                      status_name: new
+                      store_id: 1
+                      store_name: ST
+                      tax_info:
+                        customer_tariff_country_code: xxx
+                        customer_tariff_id: 1
+                        customer_tariff_number: xxxx
+                        customer_tariff_number_type: ioss
+                      warehouse_id: 1
+                      warehouse_name: SZ
+                    - cancel_status: 1
+                      channel_id: 1
+                      channel_name: SF
+                      created_at: Qui dolores modi corporis qui.
+                      customer_code: Possimus quos.
+                      customer_order_id: xxx1234
+                      fee_info:
+                        actual_weight: 1000
+                        charge_weight: 1000
+                        currency: USD
+                        fuel_fee: 5
+                        fulfillment_fee: 3
+                        handling_fee: 5
+                        max_normal_days: 1607265350
+                        min_normal_days: 1149943555
+                        misc_fee: 5
+                        package_fee: 5
+                        processing_fee: 5
+                        registration_fee: 5
+                        total_price: 1
+                        vat: 5
+                        volume_factor: 149724400
+                        volume_weight: 1000
+                      hold_reason:
+                        - code: 2035502774
+                          en_reason: Accusamus ut doloremque praesentium ea nesciunt.
+                          product_id: 4830887142123847081
+                          reason: Aut autem totam.
+                          type: At delectus deleniti delectus.
+                        - code: 2035502774
+                          en_reason: Accusamus ut doloremque praesentium ea nesciunt.
+                          product_id: 4830887142123847081
+                          reason: Aut autem totam.
+                          type: At delectus deleniti delectus.
+                        - code: 2035502774
+                          en_reason: Accusamus ut doloremque praesentium ea nesciunt.
+                          product_id: 4830887142123847081
+                          reason: Aut autem totam.
+                          type: At delectus deleniti delectus.
+                      hold_status: false
+                      inbound_order_number: Optio rerum amet est consequatur illum.
+                      items:
+                        - declared_cn_name: NSS
+                          declared_en_name: NSS
+                          declared_value_in_eur: 10.07
+                          declared_value_in_usd: 10.07
+                          ext_order_item_id: Quo rerum.
+                          ext_product_id: Aut consequatur.
+                          hs_code: xxx
+                          id: 123
+                          images:
+                            - Voluptates ipsa accusamus sed eum qui autem.
+                            - Rerum quod commodi sapiente aut nam recusandae.
+                            - Esse consequatur quia autem voluptatem laboriosam iste.
+                            - Quo praesentium ipsam quidem qui voluptatem.
+                          listing_qty: 1
+                          material: ""
+                          platform_product_id: 4688370480807507131
+                          product_attributes:
+                            - battery
+                            - cosmetic
+                            - liquid
+                            - magnetic
+                          product_barcode: xxx
+                          product_height: 10
+                          product_id: 123
+                          product_length: 10
+                          product_name: NSS mate40
+                          product_price: 10.3
+                          product_sku: xxxx
+                          product_weight: 10
+                          product_width: 10
+                          purpose: ""
+                          qty: 1
+                          requires_shipping: true
+                        - declared_cn_name: NSS
+                          declared_en_name: NSS
+                          declared_value_in_eur: 10.07
+                          declared_value_in_usd: 10.07
+                          ext_order_item_id: Quo rerum.
+                          ext_product_id: Aut consequatur.
+                          hs_code: xxx
+                          id: 123
+                          images:
+                            - Voluptates ipsa accusamus sed eum qui autem.
+                            - Rerum quod commodi sapiente aut nam recusandae.
+                            - Esse consequatur quia autem voluptatem laboriosam iste.
+                            - Quo praesentium ipsam quidem qui voluptatem.
+                          listing_qty: 1
+                          material: ""
+                          platform_product_id: 4688370480807507131
+                          product_attributes:
+                            - battery
+                            - cosmetic
+                            - liquid
+                            - magnetic
+                          product_barcode: xxx
+                          product_height: 10
+                          product_id: 123
+                          product_length: 10
+                          product_name: NSS mate40
+                          product_price: 10.3
+                          product_sku: xxxx
+                          product_weight: 10
+                          product_width: 10
+                          purpose: ""
+                          qty: 1
+                          requires_shipping: true
+                        - declared_cn_name: NSS
+                          declared_en_name: NSS
+                          declared_value_in_eur: 10.07
+                          declared_value_in_usd: 10.07
+                          ext_order_item_id: Quo rerum.
+                          ext_product_id: Aut consequatur.
+                          hs_code: xxx
+                          id: 123
+                          images:
+                            - Voluptates ipsa accusamus sed eum qui autem.
+                            - Rerum quod commodi sapiente aut nam recusandae.
+                            - Esse consequatur quia autem voluptatem laboriosam iste.
+                            - Quo praesentium ipsam quidem qui voluptatem.
+                          listing_qty: 1
+                          material: ""
+                          platform_product_id: 4688370480807507131
+                          product_attributes:
+                            - battery
+                            - cosmetic
+                            - liquid
+                            - magnetic
+                          product_barcode: xxx
+                          product_height: 10
+                          product_id: 123
+                          product_length: 10
+                          product_name: NSS mate40
+                          product_price: 10.3
+                          product_sku: xxxx
+                          product_weight: 10
+                          product_width: 10
+                          purpose: ""
+                          qty: 1
+                          requires_shipping: true
+                        - declared_cn_name: NSS
+                          declared_en_name: NSS
+                          declared_value_in_eur: 10.07
+                          declared_value_in_usd: 10.07
+                          ext_order_item_id: Quo rerum.
+                          ext_product_id: Aut consequatur.
+                          hs_code: xxx
+                          id: 123
+                          images:
+                            - Voluptates ipsa accusamus sed eum qui autem.
+                            - Rerum quod commodi sapiente aut nam recusandae.
+                            - Esse consequatur quia autem voluptatem laboriosam iste.
+                            - Quo praesentium ipsam quidem qui voluptatem.
+                          listing_qty: 1
+                          material: ""
+                          platform_product_id: 4688370480807507131
+                          product_attributes:
+                            - battery
+                            - cosmetic
+                            - liquid
+                            - magnetic
+                          product_barcode: xxx
+                          product_height: 10
+                          product_id: 123
+                          product_length: 10
+                          product_name: NSS mate40
+                          product_price: 10.3
+                          product_sku: xxxx
+                          product_weight: 10
+                          product_width: 10
+                          purpose: ""
+                          qty: 1
+                          requires_shipping: true
+                      mode: 158171744064274954
+                      not_accept_platform_update: true
+                      not_accept_platform_update_item: true
+                      note: Iusto aut aut ut velit sequi nemo.
+                      nss_tracking_number: Quia est aut dolorem vel eaque.
+                      nss_tracking_url: Nam accusamus est.
+                      offline: true
+                      order_number: "123"
+                      platform: shopify
+                      platform_info:
+                        cancelled_at: "2020-01-01 00:00:00"
+                        closed_at: "2020-01-01 00:00:00"
+                        created_at: Quia sed ut itaque aut.
+                        fulfillment_status: fulfillment
+                        not_accept_update: true
+                        order_id: 12344xxx
+                        order_link: Perferendis voluptas fugit blanditiis harum.
+                        order_no: platform order no
+                        paid_status: Paid
+                        platform_status: pending
+                        tags:
+                          - Quo eligendi libero vero consectetur beatae neque.
+                          - Dolores est animi ipsa recusandae cumque aut.
+                          - Quia error quas eum ea quisquam.
+                      receiver_info:
+                        address1: address1
+                        address2: address2
+                        certificate_code: "3455233"
+                        certificate_period: "2028-01-01"
+                        certificate_type: ID
+                        city_name: SZ
+                        company: China
+                        country_code: US
+                        country_name: US
+                        email: 123@test.com
+                        first_name: He
+                        last_name: John
+                        name: He
+                        phone_number: 150xxxxxxxx
+                        state_code: S
+                        state_name: U
+                        zip_code: "10016"
+                      remark: Aut eos natus libero cupiditate.
+                      request_shipping_at: Sequi aut dolorem veniam.
+                      ship_date: Id eaque.
+                      status: 1
+                      status_name: new
+                      store_id: 1
+                      store_name: ST
+                      tax_info:
+                        customer_tariff_country_code: xxx
+                        customer_tariff_id: 1
+                        customer_tariff_number: xxxx
+                        customer_tariff_number_type: ioss
+                      warehouse_id: 1
+                      warehouse_name: SZ
+                    - cancel_status: 1
+                      channel_id: 1
+                      channel_name: SF
+                      created_at: Qui dolores modi corporis qui.
+                      customer_code: Possimus quos.
+                      customer_order_id: xxx1234
+                      fee_info:
+                        actual_weight: 1000
+                        charge_weight: 1000
+                        currency: USD
+                        fuel_fee: 5
+                        fulfillment_fee: 3
+                        handling_fee: 5
+                        max_normal_days: 1607265350
+                        min_normal_days: 1149943555
+                        misc_fee: 5
+                        package_fee: 5
+                        processing_fee: 5
+                        registration_fee: 5
+                        total_price: 1
+                        vat: 5
+                        volume_factor: 149724400
+                        volume_weight: 1000
+                      hold_reason:
+                        - code: 2035502774
+                          en_reason: Accusamus ut doloremque praesentium ea nesciunt.
+                          product_id: 4830887142123847081
+                          reason: Aut autem totam.
+                          type: At delectus deleniti delectus.
+                        - code: 2035502774
+                          en_reason: Accusamus ut doloremque praesentium ea nesciunt.
+                          product_id: 4830887142123847081
+                          reason: Aut autem totam.
+                          type: At delectus deleniti delectus.
+                        - code: 2035502774
+                          en_reason: Accusamus ut doloremque praesentium ea nesciunt.
+                          product_id: 4830887142123847081
+                          reason: Aut autem totam.
+                          type: At delectus deleniti delectus.
+                      hold_status: false
+                      inbound_order_number: Optio rerum amet est consequatur illum.
+                      items:
+                        - declared_cn_name: NSS
+                          declared_en_name: NSS
+                          declared_value_in_eur: 10.07
+                          declared_value_in_usd: 10.07
+                          ext_order_item_id: Quo rerum.
+                          ext_product_id: Aut consequatur.
+                          hs_code: xxx
+                          id: 123
+                          images:
+                            - Voluptates ipsa accusamus sed eum qui autem.
+                            - Rerum quod commodi sapiente aut nam recusandae.
+                            - Esse consequatur quia autem voluptatem laboriosam iste.
+                            - Quo praesentium ipsam quidem qui voluptatem.
+                          listing_qty: 1
+                          material: ""
+                          platform_product_id: 4688370480807507131
+                          product_attributes:
+                            - battery
+                            - cosmetic
+                            - liquid
+                            - magnetic
+                          product_barcode: xxx
+                          product_height: 10
+                          product_id: 123
+                          product_length: 10
+                          product_name: NSS mate40
+                          product_price: 10.3
+                          product_sku: xxxx
+                          product_weight: 10
+                          product_width: 10
+                          purpose: ""
+                          qty: 1
+                          requires_shipping: true
+                        - declared_cn_name: NSS
+                          declared_en_name: NSS
+                          declared_value_in_eur: 10.07
+                          declared_value_in_usd: 10.07
+                          ext_order_item_id: Quo rerum.
+                          ext_product_id: Aut consequatur.
+                          hs_code: xxx
+                          id: 123
+                          images:
+                            - Voluptates ipsa accusamus sed eum qui autem.
+                            - Rerum quod commodi sapiente aut nam recusandae.
+                            - Esse consequatur quia autem voluptatem laboriosam iste.
+                            - Quo praesentium ipsam quidem qui voluptatem.
+                          listing_qty: 1
+                          material: ""
+                          platform_product_id: 4688370480807507131
+                          product_attributes:
+                            - battery
+                            - cosmetic
+                            - liquid
+                            - magnetic
+                          product_barcode: xxx
+                          product_height: 10
+                          product_id: 123
+                          product_length: 10
+                          product_name: NSS mate40
+                          product_price: 10.3
+                          product_sku: xxxx
+                          product_weight: 10
+                          product_width: 10
+                          purpose: ""
+                          qty: 1
+                          requires_shipping: true
+                        - declared_cn_name: NSS
+                          declared_en_name: NSS
+                          declared_value_in_eur: 10.07
+                          declared_value_in_usd: 10.07
+                          ext_order_item_id: Quo rerum.
+                          ext_product_id: Aut consequatur.
+                          hs_code: xxx
+                          id: 123
+                          images:
+                            - Voluptates ipsa accusamus sed eum qui autem.
+                            - Rerum quod commodi sapiente aut nam recusandae.
+                            - Esse consequatur quia autem voluptatem laboriosam iste.
+                            - Quo praesentium ipsam quidem qui voluptatem.
+                          listing_qty: 1
+                          material: ""
+                          platform_product_id: 4688370480807507131
+                          product_attributes:
+                            - battery
+                            - cosmetic
+                            - liquid
+                            - magnetic
+                          product_barcode: xxx
+                          product_height: 10
+                          product_id: 123
+                          product_length: 10
+                          product_name: NSS mate40
+                          product_price: 10.3
+                          product_sku: xxxx
+                          product_weight: 10
+                          product_width: 10
+                          purpose: ""
+                          qty: 1
+                          requires_shipping: true
+                        - declared_cn_name: NSS
+                          declared_en_name: NSS
+                          declared_value_in_eur: 10.07
+                          declared_value_in_usd: 10.07
+                          ext_order_item_id: Quo rerum.
+                          ext_product_id: Aut consequatur.
+                          hs_code: xxx
+                          id: 123
+                          images:
+                            - Voluptates ipsa accusamus sed eum qui autem.
+                            - Rerum quod commodi sapiente aut nam recusandae.
+                            - Esse consequatur quia autem voluptatem laboriosam iste.
+                            - Quo praesentium ipsam quidem qui voluptatem.
+                          listing_qty: 1
+                          material: ""
+                          platform_product_id: 4688370480807507131
+                          product_attributes:
+                            - battery
+                            - cosmetic
+                            - liquid
+                            - magnetic
+                          product_barcode: xxx
+                          product_height: 10
+                          product_id: 123
+                          product_length: 10
+                          product_name: NSS mate40
+                          product_price: 10.3
+                          product_sku: xxxx
+                          product_weight: 10
+                          product_width: 10
+                          purpose: ""
+                          qty: 1
+                          requires_shipping: true
+                      mode: 158171744064274954
+                      not_accept_platform_update: true
+                      not_accept_platform_update_item: true
+                      note: Iusto aut aut ut velit sequi nemo.
+                      nss_tracking_number: Quia est aut dolorem vel eaque.
+                      nss_tracking_url: Nam accusamus est.
+                      offline: true
+                      order_number: "123"
+                      platform: shopify
+                      platform_info:
+                        cancelled_at: "2020-01-01 00:00:00"
+                        closed_at: "2020-01-01 00:00:00"
+                        created_at: Quia sed ut itaque aut.
+                        fulfillment_status: fulfillment
+                        not_accept_update: true
+                        order_id: 12344xxx
+                        order_link: Perferendis voluptas fugit blanditiis harum.
+                        order_no: platform order no
+                        paid_status: Paid
+                        platform_status: pending
+                        tags:
+                          - Quo eligendi libero vero consectetur beatae neque.
+                          - Dolores est animi ipsa recusandae cumque aut.
+                          - Quia error quas eum ea quisquam.
+                      receiver_info:
+                        address1: address1
+                        address2: address2
+                        certificate_code: "3455233"
+                        certificate_period: "2028-01-01"
+                        certificate_type: ID
+                        city_name: SZ
+                        company: China
+                        country_code: US
+                        country_name: US
+                        email: 123@test.com
+                        first_name: He
+                        last_name: John
+                        name: He
+                        phone_number: 150xxxxxxxx
+                        state_code: S
+                        state_name: U
+                        zip_code: "10016"
+                      remark: Aut eos natus libero cupiditate.
+                      request_shipping_at: Sequi aut dolorem veniam.
+                      ship_date: Id eaque.
+                      status: 1
+                      status_name: new
+                      store_id: 1
+                      store_name: ST
+                      tax_info:
+                        customer_tariff_country_code: xxx
+                        customer_tariff_id: 1
+                        customer_tariff_number: xxxx
+                        customer_tariff_number_type: ioss
+                      warehouse_id: 1
+                      warehouse_name: SZ
+                  meta:
+                    current: 1
+                    page_size: 1
+                    total: 1
+                message: description error information
+        "401":
+          description: Unauthorized response.
+          content:
+            application/vnd.goa.error:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                id: 3F1FKVRR
+                message: Value of ID must be an integer
+                name: bad_request
+      security:
+        - jwt_header_Authorization:
+            - api:read
+            - api:write
     post:
       tags:
         - order
@@ -384,6 +1156,225 @@ paths:
             - api:read
             - api:write
   /oms/v1/products:
+    get:
+      tags:
+        - product
+      summary: products_query product
+      operationId: product#products_query
+      parameters:
+        - name: name
+          in: query
+          description: name
+          allowEmptyValue: true
+          schema:
+            type: string
+            description: name
+            example: xxx
+            maxLength: 50
+          example: xxx
+        - name: sku
+          in: query
+          description: sku
+          allowEmptyValue: true
+          schema:
+            type: string
+            description: sku
+            example: Ut eaque quidem voluptates occaecati.
+          example: Rerum qui sapiente rerum sint ab.
+        - name: barcode
+          in: query
+          description: barcode
+          allowEmptyValue: true
+          schema:
+            type: string
+            description: barcode
+            example: Praesentium consequuntur ipsum.
+          example: Blanditiis eos praesentium placeat.
+        - name: status
+          in: query
+          description: status
+          allowEmptyValue: true
+          schema:
+            type: integer
+            description: status
+            example: 1
+            enum:
+              - 0
+              - 1
+              - 10
+          example: 1
+        - name: attributes
+          in: query
+          description: attributes
+          allowEmptyValue: true
+          schema:
+            type: array
+            items:
+              type: string
+              example: Quisquam recusandae.
+            description: attributes
+            example:
+              - normal
+              - liquid
+              - electric
+              - cosmetic
+              - magnetic
+          example:
+            - normal
+            - liquid
+            - electric
+            - cosmetic
+            - magnetic
+        - name: inventory
+          in: query
+          description: inventory
+          allowEmptyValue: true
+          schema:
+            type: boolean
+            description: inventory
+            example: false
+            enum:
+              - false
+              - true
+          example: false
+        - name: current
+          in: query
+          description: current
+          allowEmptyValue: true
+          schema:
+            type: integer
+            description: current
+            example: 1
+            minimum: 1
+          example: 1
+        - name: page_size
+          in: query
+          description: page_size
+          allowEmptyValue: true
+          schema:
+            type: integer
+            description: page_size
+            example: 1
+            minimum: 1
+          example: 1
+      responses:
+        "200":
+          description: OK response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductsQueryRsp'
+              example:
+                code: 0
+                data:
+                  list:
+                    - attributes:
+                        - Impedit eos.
+                        - Nesciunt inventore repellendus sunt qui dolorem iusto.
+                      barcode: Eveniet in sapiente ut et.
+                      declared_cn_name: Harum quaerat optio aut possimus eaque.
+                      declared_en_name: Ipsa provident ut aut.
+                      declared_value_in_eur: 0.8981417916237528
+                      declared_value_in_usd: 0.03746445121771127
+                      height: 5293434339534308277
+                      id: 6977855505810604620
+                      images:
+                        - Officia tempore et consectetur magnam.
+                        - Mollitia eaque.
+                        - Eligendi sed voluptate iure quae eaque suscipit.
+                      inbound_weight: 8317200613882175116
+                      inventory: 6732317644576720138
+                      length: 5509805301871315678
+                      name: Rerum molestiae.
+                      sku: Omnis nulla doloribus hic.
+                      status: 2054953822437866168
+                      weight: 6941287392495769747
+                      width: 7229126780466010591
+                    - attributes:
+                        - Impedit eos.
+                        - Nesciunt inventore repellendus sunt qui dolorem iusto.
+                      barcode: Eveniet in sapiente ut et.
+                      declared_cn_name: Harum quaerat optio aut possimus eaque.
+                      declared_en_name: Ipsa provident ut aut.
+                      declared_value_in_eur: 0.8981417916237528
+                      declared_value_in_usd: 0.03746445121771127
+                      height: 5293434339534308277
+                      id: 6977855505810604620
+                      images:
+                        - Officia tempore et consectetur magnam.
+                        - Mollitia eaque.
+                        - Eligendi sed voluptate iure quae eaque suscipit.
+                      inbound_weight: 8317200613882175116
+                      inventory: 6732317644576720138
+                      length: 5509805301871315678
+                      name: Rerum molestiae.
+                      sku: Omnis nulla doloribus hic.
+                      status: 2054953822437866168
+                      weight: 6941287392495769747
+                      width: 7229126780466010591
+                    - attributes:
+                        - Impedit eos.
+                        - Nesciunt inventore repellendus sunt qui dolorem iusto.
+                      barcode: Eveniet in sapiente ut et.
+                      declared_cn_name: Harum quaerat optio aut possimus eaque.
+                      declared_en_name: Ipsa provident ut aut.
+                      declared_value_in_eur: 0.8981417916237528
+                      declared_value_in_usd: 0.03746445121771127
+                      height: 5293434339534308277
+                      id: 6977855505810604620
+                      images:
+                        - Officia tempore et consectetur magnam.
+                        - Mollitia eaque.
+                        - Eligendi sed voluptate iure quae eaque suscipit.
+                      inbound_weight: 8317200613882175116
+                      inventory: 6732317644576720138
+                      length: 5509805301871315678
+                      name: Rerum molestiae.
+                      sku: Omnis nulla doloribus hic.
+                      status: 2054953822437866168
+                      weight: 6941287392495769747
+                      width: 7229126780466010591
+                    - attributes:
+                        - Impedit eos.
+                        - Nesciunt inventore repellendus sunt qui dolorem iusto.
+                      barcode: Eveniet in sapiente ut et.
+                      declared_cn_name: Harum quaerat optio aut possimus eaque.
+                      declared_en_name: Ipsa provident ut aut.
+                      declared_value_in_eur: 0.8981417916237528
+                      declared_value_in_usd: 0.03746445121771127
+                      height: 5293434339534308277
+                      id: 6977855505810604620
+                      images:
+                        - Officia tempore et consectetur magnam.
+                        - Mollitia eaque.
+                        - Eligendi sed voluptate iure quae eaque suscipit.
+                      inbound_weight: 8317200613882175116
+                      inventory: 6732317644576720138
+                      length: 5509805301871315678
+                      name: Rerum molestiae.
+                      sku: Omnis nulla doloribus hic.
+                      status: 2054953822437866168
+                      weight: 6941287392495769747
+                      width: 7229126780466010591
+                  meta:
+                    current: 1
+                    page_size: 1
+                    total: 1
+                message: description error information
+        "401":
+          description: Unauthorized response.
+          content:
+            application/vnd.goa.error:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                id: 3F1FKVRR
+                message: Value of ID must be an integer
+                name: bad_request
+      security:
+        - jwt_header_Authorization:
+            - api:read
+            - api:write
     post:
       tags:
         - product
@@ -629,6 +1620,407 @@ paths:
                 name: bad_request
 components:
   schemas:
+    ProductItem:
+      type: object
+      properties:
+        attributes:
+          type: array
+          items:
+            type: string
+            example: Rerum deserunt blanditiis doloribus animi non.
+          description: attributes
+          example:
+            - Cupiditate blanditiis est ut et quo.
+            - Minus ut quasi.
+            - Qui voluptatum corporis provident et.
+            - Laudantium est fugiat corrupti laudantium.
+        barcode:
+          type: string
+          description: barcode
+          example: Dicta facilis corrupti qui.
+        declared_cn_name:
+          type: string
+          description: declared_cn_name
+          example: Aut totam alias asperiores dolorum fugit.
+        declared_en_name:
+          type: string
+          description: declare_en_name
+          example: Neque qui.
+        declared_value_in_eur:
+          type: number
+          description: declared_value_in_eur
+          example: 0.10497661449874097
+          format: double
+        declared_value_in_usd:
+          type: number
+          description: declared_value_in_usd
+          example: 0.28832017986195096
+          format: double
+        height:
+          type: integer
+          description: height
+          example: 284229188718377445
+          format: int64
+        id:
+          type: integer
+          description: id
+          example: 3912655186402640086
+          format: int64
+        images:
+          type: array
+          items:
+            type: string
+            example: Animi dolorum sint nobis ab.
+          description: images
+          example:
+            - Pariatur deleniti dicta.
+            - Ut in amet.
+            - Aliquid quisquam ab unde et eos in.
+        inbound_weight:
+          type: integer
+          description: inbound_ eight
+          example: 8960520083378636204
+          format: int64
+        inventory:
+          type: integer
+          description: inventory
+          example: 6210512143108734631
+          format: int64
+        length:
+          type: integer
+          description: length
+          example: 1254800710546233483
+          format: int64
+        name:
+          type: string
+          description: name
+          example: Et illo odio ad quae.
+        sku:
+          type: string
+          description: sku
+          example: Atque dolorem.
+        status:
+          type: integer
+          description: status
+          example: 3316744629810130355
+          format: int64
+        weight:
+          type: integer
+          description: weight
+          example: 1498175787983871116
+          format: int64
+        width:
+          type: integer
+          description: width
+          example: 5506309688970794705
+          format: int64
+      description: ProductItem describes product item
+      example:
+        attributes:
+          - Quis est sapiente.
+          - Dolorem sit repellendus optio deserunt similique.
+        barcode: Qui cupiditate ipsam libero.
+        declared_cn_name: Molestiae nulla voluptate assumenda.
+        declared_en_name: Animi consectetur repellat.
+        declared_value_in_eur: 0.9620054187934683
+        declared_value_in_usd: 0.9909792306315018
+        height: 940281774849987512
+        id: 8554554420879507426
+        images:
+          - Nesciunt fugit minus magni tempore.
+          - Eos autem omnis odio.
+        inbound_weight: 3010711914654210581
+        inventory: 8623422760008739692
+        length: 655126954594543662
+        name: Doloremque et aspernatur temporibus repellendus aliquam beatae.
+        sku: Voluptate fuga est nihil hic porro odio.
+        status: 971889367800923143
+        weight: 868501134319197791
+        width: 739907638742348895
+      required:
+        - id
+        - status
+        - barcode
+        - sku
+        - name
+        - attributes
+        - images
+        - inventory
+        - weight
+        - inbound_weight
+        - length
+        - width
+        - height
+        - declared_cn_name
+        - declared_en_name
+        - declared_value_in_usd
+        - declared_value_in_eur
+    ProductsQueryRsp:
+      type: object
+      properties:
+        code:
+          type: integer
+          description: code
+          example: 0
+          format: int64
+        data:
+          $ref: '#/components/schemas/ProductsQueryData'
+        message:
+          type: string
+          description: message
+          example: description error information
+      example:
+        code: 0
+        data:
+          list:
+            - attributes:
+                - Impedit eos.
+                - Nesciunt inventore repellendus sunt qui dolorem iusto.
+              barcode: Eveniet in sapiente ut et.
+              declared_cn_name: Harum quaerat optio aut possimus eaque.
+              declared_en_name: Ipsa provident ut aut.
+              declared_value_in_eur: 0.8981417916237528
+              declared_value_in_usd: 0.03746445121771127
+              height: 5293434339534308277
+              id: 6977855505810604620
+              images:
+                - Officia tempore et consectetur magnam.
+                - Mollitia eaque.
+                - Eligendi sed voluptate iure quae eaque suscipit.
+              inbound_weight: 8317200613882175116
+              inventory: 6732317644576720138
+              length: 5509805301871315678
+              name: Rerum molestiae.
+              sku: Omnis nulla doloribus hic.
+              status: 2054953822437866168
+              weight: 6941287392495769747
+              width: 7229126780466010591
+            - attributes:
+                - Impedit eos.
+                - Nesciunt inventore repellendus sunt qui dolorem iusto.
+              barcode: Eveniet in sapiente ut et.
+              declared_cn_name: Harum quaerat optio aut possimus eaque.
+              declared_en_name: Ipsa provident ut aut.
+              declared_value_in_eur: 0.8981417916237528
+              declared_value_in_usd: 0.03746445121771127
+              height: 5293434339534308277
+              id: 6977855505810604620
+              images:
+                - Officia tempore et consectetur magnam.
+                - Mollitia eaque.
+                - Eligendi sed voluptate iure quae eaque suscipit.
+              inbound_weight: 8317200613882175116
+              inventory: 6732317644576720138
+              length: 5509805301871315678
+              name: Rerum molestiae.
+              sku: Omnis nulla doloribus hic.
+              status: 2054953822437866168
+              weight: 6941287392495769747
+              width: 7229126780466010591
+            - attributes:
+                - Impedit eos.
+                - Nesciunt inventore repellendus sunt qui dolorem iusto.
+              barcode: Eveniet in sapiente ut et.
+              declared_cn_name: Harum quaerat optio aut possimus eaque.
+              declared_en_name: Ipsa provident ut aut.
+              declared_value_in_eur: 0.8981417916237528
+              declared_value_in_usd: 0.03746445121771127
+              height: 5293434339534308277
+              id: 6977855505810604620
+              images:
+                - Officia tempore et consectetur magnam.
+                - Mollitia eaque.
+                - Eligendi sed voluptate iure quae eaque suscipit.
+              inbound_weight: 8317200613882175116
+              inventory: 6732317644576720138
+              length: 5509805301871315678
+              name: Rerum molestiae.
+              sku: Omnis nulla doloribus hic.
+              status: 2054953822437866168
+              weight: 6941287392495769747
+              width: 7229126780466010591
+            - attributes:
+                - Impedit eos.
+                - Nesciunt inventore repellendus sunt qui dolorem iusto.
+              barcode: Eveniet in sapiente ut et.
+              declared_cn_name: Harum quaerat optio aut possimus eaque.
+              declared_en_name: Ipsa provident ut aut.
+              declared_value_in_eur: 0.8981417916237528
+              declared_value_in_usd: 0.03746445121771127
+              height: 5293434339534308277
+              id: 6977855505810604620
+              images:
+                - Officia tempore et consectetur magnam.
+                - Mollitia eaque.
+                - Eligendi sed voluptate iure quae eaque suscipit.
+              inbound_weight: 8317200613882175116
+              inventory: 6732317644576720138
+              length: 5509805301871315678
+              name: Rerum molestiae.
+              sku: Omnis nulla doloribus hic.
+              status: 2054953822437866168
+              weight: 6941287392495769747
+              width: 7229126780466010591
+          meta:
+            current: 1
+            page_size: 1
+            total: 1
+        message: description error information
+      required:
+        - code
+        - message
+    ProductsQueryData:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductItem'
+          description: list
+          example:
+            - attributes:
+                - Impedit eos.
+                - Nesciunt inventore repellendus sunt qui dolorem iusto.
+              barcode: Eveniet in sapiente ut et.
+              declared_cn_name: Harum quaerat optio aut possimus eaque.
+              declared_en_name: Ipsa provident ut aut.
+              declared_value_in_eur: 0.8981417916237528
+              declared_value_in_usd: 0.03746445121771127
+              height: 5293434339534308277
+              id: 6977855505810604620
+              images:
+                - Officia tempore et consectetur magnam.
+                - Mollitia eaque.
+                - Eligendi sed voluptate iure quae eaque suscipit.
+              inbound_weight: 8317200613882175116
+              inventory: 6732317644576720138
+              length: 5509805301871315678
+              name: Rerum molestiae.
+              sku: Omnis nulla doloribus hic.
+              status: 2054953822437866168
+              weight: 6941287392495769747
+              width: 7229126780466010591
+            - attributes:
+                - Impedit eos.
+                - Nesciunt inventore repellendus sunt qui dolorem iusto.
+              barcode: Eveniet in sapiente ut et.
+              declared_cn_name: Harum quaerat optio aut possimus eaque.
+              declared_en_name: Ipsa provident ut aut.
+              declared_value_in_eur: 0.8981417916237528
+              declared_value_in_usd: 0.03746445121771127
+              height: 5293434339534308277
+              id: 6977855505810604620
+              images:
+                - Officia tempore et consectetur magnam.
+                - Mollitia eaque.
+                - Eligendi sed voluptate iure quae eaque suscipit.
+              inbound_weight: 8317200613882175116
+              inventory: 6732317644576720138
+              length: 5509805301871315678
+              name: Rerum molestiae.
+              sku: Omnis nulla doloribus hic.
+              status: 2054953822437866168
+              weight: 6941287392495769747
+              width: 7229126780466010591
+            - attributes:
+                - Impedit eos.
+                - Nesciunt inventore repellendus sunt qui dolorem iusto.
+              barcode: Eveniet in sapiente ut et.
+              declared_cn_name: Harum quaerat optio aut possimus eaque.
+              declared_en_name: Ipsa provident ut aut.
+              declared_value_in_eur: 0.8981417916237528
+              declared_value_in_usd: 0.03746445121771127
+              height: 5293434339534308277
+              id: 6977855505810604620
+              images:
+                - Officia tempore et consectetur magnam.
+                - Mollitia eaque.
+                - Eligendi sed voluptate iure quae eaque suscipit.
+              inbound_weight: 8317200613882175116
+              inventory: 6732317644576720138
+              length: 5509805301871315678
+              name: Rerum molestiae.
+              sku: Omnis nulla doloribus hic.
+              status: 2054953822437866168
+              weight: 6941287392495769747
+              width: 7229126780466010591
+        meta:
+          $ref: '#/components/schemas/MetaData'
+      description: ProductsQueryData describes the query products resp
+      example:
+        list:
+          - attributes:
+              - Impedit eos.
+              - Nesciunt inventore repellendus sunt qui dolorem iusto.
+            barcode: Eveniet in sapiente ut et.
+            declared_cn_name: Harum quaerat optio aut possimus eaque.
+            declared_en_name: Ipsa provident ut aut.
+            declared_value_in_eur: 0.8981417916237528
+            declared_value_in_usd: 0.03746445121771127
+            height: 5293434339534308277
+            id: 6977855505810604620
+            images:
+              - Officia tempore et consectetur magnam.
+              - Mollitia eaque.
+              - Eligendi sed voluptate iure quae eaque suscipit.
+            inbound_weight: 8317200613882175116
+            inventory: 6732317644576720138
+            length: 5509805301871315678
+            name: Rerum molestiae.
+            sku: Omnis nulla doloribus hic.
+            status: 2054953822437866168
+            weight: 6941287392495769747
+            width: 7229126780466010591
+          - attributes:
+              - Impedit eos.
+              - Nesciunt inventore repellendus sunt qui dolorem iusto.
+            barcode: Eveniet in sapiente ut et.
+            declared_cn_name: Harum quaerat optio aut possimus eaque.
+            declared_en_name: Ipsa provident ut aut.
+            declared_value_in_eur: 0.8981417916237528
+            declared_value_in_usd: 0.03746445121771127
+            height: 5293434339534308277
+            id: 6977855505810604620
+            images:
+              - Officia tempore et consectetur magnam.
+              - Mollitia eaque.
+              - Eligendi sed voluptate iure quae eaque suscipit.
+            inbound_weight: 8317200613882175116
+            inventory: 6732317644576720138
+            length: 5509805301871315678
+            name: Rerum molestiae.
+            sku: Omnis nulla doloribus hic.
+            status: 2054953822437866168
+            weight: 6941287392495769747
+            width: 7229126780466010591
+          - attributes:
+              - Impedit eos.
+              - Nesciunt inventore repellendus sunt qui dolorem iusto.
+            barcode: Eveniet in sapiente ut et.
+            declared_cn_name: Harum quaerat optio aut possimus eaque.
+            declared_en_name: Ipsa provident ut aut.
+            declared_value_in_eur: 0.8981417916237528
+            declared_value_in_usd: 0.03746445121771127
+            height: 5293434339534308277
+            id: 6977855505810604620
+            images:
+              - Officia tempore et consectetur magnam.
+              - Mollitia eaque.
+              - Eligendi sed voluptate iure quae eaque suscipit.
+            inbound_weight: 8317200613882175116
+            inventory: 6732317644576720138
+            length: 5509805301871315678
+            name: Rerum molestiae.
+            sku: Omnis nulla doloribus hic.
+            status: 2054953822437866168
+            weight: 6941287392495769747
+            width: 7229126780466010591
+        meta:
+          current: 1
+          page_size: 1
+          total: 1
+      required:
+        - list
     CreateOmsOutboundOrderRequestBody:
       type: object
       properties:
@@ -2007,6 +3399,2380 @@ components:
         - address2
         - city_name
         - zip_code
+    OrderRsp:
+      type: object
+      properties:
+        code:
+          type: integer
+          description: code
+          example: 0
+          format: int64
+        data:
+          $ref: '#/components/schemas/OrderInfo'
+        message:
+          type: string
+          description: message
+          example: description error information
+      example:
+        code: 0
+        data:
+          list:
+            - cancel_status: 1
+              channel_id: 1
+              channel_name: SF
+              created_at: Qui dolores modi corporis qui.
+              customer_code: Possimus quos.
+              customer_order_id: xxx1234
+              fee_info:
+                actual_weight: 1000
+                charge_weight: 1000
+                currency: USD
+                fuel_fee: 5
+                fulfillment_fee: 3
+                handling_fee: 5
+                max_normal_days: 1607265350
+                min_normal_days: 1149943555
+                misc_fee: 5
+                package_fee: 5
+                processing_fee: 5
+                registration_fee: 5
+                total_price: 1
+                vat: 5
+                volume_factor: 149724400
+                volume_weight: 1000
+              hold_reason:
+                - code: 2035502774
+                  en_reason: Accusamus ut doloremque praesentium ea nesciunt.
+                  product_id: 4830887142123847081
+                  reason: Aut autem totam.
+                  type: At delectus deleniti delectus.
+                - code: 2035502774
+                  en_reason: Accusamus ut doloremque praesentium ea nesciunt.
+                  product_id: 4830887142123847081
+                  reason: Aut autem totam.
+                  type: At delectus deleniti delectus.
+                - code: 2035502774
+                  en_reason: Accusamus ut doloremque praesentium ea nesciunt.
+                  product_id: 4830887142123847081
+                  reason: Aut autem totam.
+                  type: At delectus deleniti delectus.
+              hold_status: false
+              inbound_order_number: Optio rerum amet est consequatur illum.
+              items:
+                - declared_cn_name: NSS
+                  declared_en_name: NSS
+                  declared_value_in_eur: 10.07
+                  declared_value_in_usd: 10.07
+                  ext_order_item_id: Quo rerum.
+                  ext_product_id: Aut consequatur.
+                  hs_code: xxx
+                  id: 123
+                  images:
+                    - Voluptates ipsa accusamus sed eum qui autem.
+                    - Rerum quod commodi sapiente aut nam recusandae.
+                    - Esse consequatur quia autem voluptatem laboriosam iste.
+                    - Quo praesentium ipsam quidem qui voluptatem.
+                  listing_qty: 1
+                  material: ""
+                  platform_product_id: 4688370480807507131
+                  product_attributes:
+                    - battery
+                    - cosmetic
+                    - liquid
+                    - magnetic
+                  product_barcode: xxx
+                  product_height: 10
+                  product_id: 123
+                  product_length: 10
+                  product_name: NSS mate40
+                  product_price: 10.3
+                  product_sku: xxxx
+                  product_weight: 10
+                  product_width: 10
+                  purpose: ""
+                  qty: 1
+                  requires_shipping: true
+                - declared_cn_name: NSS
+                  declared_en_name: NSS
+                  declared_value_in_eur: 10.07
+                  declared_value_in_usd: 10.07
+                  ext_order_item_id: Quo rerum.
+                  ext_product_id: Aut consequatur.
+                  hs_code: xxx
+                  id: 123
+                  images:
+                    - Voluptates ipsa accusamus sed eum qui autem.
+                    - Rerum quod commodi sapiente aut nam recusandae.
+                    - Esse consequatur quia autem voluptatem laboriosam iste.
+                    - Quo praesentium ipsam quidem qui voluptatem.
+                  listing_qty: 1
+                  material: ""
+                  platform_product_id: 4688370480807507131
+                  product_attributes:
+                    - battery
+                    - cosmetic
+                    - liquid
+                    - magnetic
+                  product_barcode: xxx
+                  product_height: 10
+                  product_id: 123
+                  product_length: 10
+                  product_name: NSS mate40
+                  product_price: 10.3
+                  product_sku: xxxx
+                  product_weight: 10
+                  product_width: 10
+                  purpose: ""
+                  qty: 1
+                  requires_shipping: true
+                - declared_cn_name: NSS
+                  declared_en_name: NSS
+                  declared_value_in_eur: 10.07
+                  declared_value_in_usd: 10.07
+                  ext_order_item_id: Quo rerum.
+                  ext_product_id: Aut consequatur.
+                  hs_code: xxx
+                  id: 123
+                  images:
+                    - Voluptates ipsa accusamus sed eum qui autem.
+                    - Rerum quod commodi sapiente aut nam recusandae.
+                    - Esse consequatur quia autem voluptatem laboriosam iste.
+                    - Quo praesentium ipsam quidem qui voluptatem.
+                  listing_qty: 1
+                  material: ""
+                  platform_product_id: 4688370480807507131
+                  product_attributes:
+                    - battery
+                    - cosmetic
+                    - liquid
+                    - magnetic
+                  product_barcode: xxx
+                  product_height: 10
+                  product_id: 123
+                  product_length: 10
+                  product_name: NSS mate40
+                  product_price: 10.3
+                  product_sku: xxxx
+                  product_weight: 10
+                  product_width: 10
+                  purpose: ""
+                  qty: 1
+                  requires_shipping: true
+                - declared_cn_name: NSS
+                  declared_en_name: NSS
+                  declared_value_in_eur: 10.07
+                  declared_value_in_usd: 10.07
+                  ext_order_item_id: Quo rerum.
+                  ext_product_id: Aut consequatur.
+                  hs_code: xxx
+                  id: 123
+                  images:
+                    - Voluptates ipsa accusamus sed eum qui autem.
+                    - Rerum quod commodi sapiente aut nam recusandae.
+                    - Esse consequatur quia autem voluptatem laboriosam iste.
+                    - Quo praesentium ipsam quidem qui voluptatem.
+                  listing_qty: 1
+                  material: ""
+                  platform_product_id: 4688370480807507131
+                  product_attributes:
+                    - battery
+                    - cosmetic
+                    - liquid
+                    - magnetic
+                  product_barcode: xxx
+                  product_height: 10
+                  product_id: 123
+                  product_length: 10
+                  product_name: NSS mate40
+                  product_price: 10.3
+                  product_sku: xxxx
+                  product_weight: 10
+                  product_width: 10
+                  purpose: ""
+                  qty: 1
+                  requires_shipping: true
+              mode: 158171744064274954
+              not_accept_platform_update: true
+              not_accept_platform_update_item: true
+              note: Iusto aut aut ut velit sequi nemo.
+              nss_tracking_number: Quia est aut dolorem vel eaque.
+              nss_tracking_url: Nam accusamus est.
+              offline: true
+              order_number: "123"
+              platform: shopify
+              platform_info:
+                cancelled_at: "2020-01-01 00:00:00"
+                closed_at: "2020-01-01 00:00:00"
+                created_at: Quia sed ut itaque aut.
+                fulfillment_status: fulfillment
+                not_accept_update: true
+                order_id: 12344xxx
+                order_link: Perferendis voluptas fugit blanditiis harum.
+                order_no: platform order no
+                paid_status: Paid
+                platform_status: pending
+                tags:
+                  - Quo eligendi libero vero consectetur beatae neque.
+                  - Dolores est animi ipsa recusandae cumque aut.
+                  - Quia error quas eum ea quisquam.
+              receiver_info:
+                address1: address1
+                address2: address2
+                certificate_code: "3455233"
+                certificate_period: "2028-01-01"
+                certificate_type: ID
+                city_name: SZ
+                company: China
+                country_code: US
+                country_name: US
+                email: 123@test.com
+                first_name: He
+                last_name: John
+                name: He
+                phone_number: 150xxxxxxxx
+                state_code: S
+                state_name: U
+                zip_code: "10016"
+              remark: Aut eos natus libero cupiditate.
+              request_shipping_at: Sequi aut dolorem veniam.
+              ship_date: Id eaque.
+              status: 1
+              status_name: new
+              store_id: 1
+              store_name: ST
+              tax_info:
+                customer_tariff_country_code: xxx
+                customer_tariff_id: 1
+                customer_tariff_number: xxxx
+                customer_tariff_number_type: ioss
+              warehouse_id: 1
+              warehouse_name: SZ
+            - cancel_status: 1
+              channel_id: 1
+              channel_name: SF
+              created_at: Qui dolores modi corporis qui.
+              customer_code: Possimus quos.
+              customer_order_id: xxx1234
+              fee_info:
+                actual_weight: 1000
+                charge_weight: 1000
+                currency: USD
+                fuel_fee: 5
+                fulfillment_fee: 3
+                handling_fee: 5
+                max_normal_days: 1607265350
+                min_normal_days: 1149943555
+                misc_fee: 5
+                package_fee: 5
+                processing_fee: 5
+                registration_fee: 5
+                total_price: 1
+                vat: 5
+                volume_factor: 149724400
+                volume_weight: 1000
+              hold_reason:
+                - code: 2035502774
+                  en_reason: Accusamus ut doloremque praesentium ea nesciunt.
+                  product_id: 4830887142123847081
+                  reason: Aut autem totam.
+                  type: At delectus deleniti delectus.
+                - code: 2035502774
+                  en_reason: Accusamus ut doloremque praesentium ea nesciunt.
+                  product_id: 4830887142123847081
+                  reason: Aut autem totam.
+                  type: At delectus deleniti delectus.
+                - code: 2035502774
+                  en_reason: Accusamus ut doloremque praesentium ea nesciunt.
+                  product_id: 4830887142123847081
+                  reason: Aut autem totam.
+                  type: At delectus deleniti delectus.
+              hold_status: false
+              inbound_order_number: Optio rerum amet est consequatur illum.
+              items:
+                - declared_cn_name: NSS
+                  declared_en_name: NSS
+                  declared_value_in_eur: 10.07
+                  declared_value_in_usd: 10.07
+                  ext_order_item_id: Quo rerum.
+                  ext_product_id: Aut consequatur.
+                  hs_code: xxx
+                  id: 123
+                  images:
+                    - Voluptates ipsa accusamus sed eum qui autem.
+                    - Rerum quod commodi sapiente aut nam recusandae.
+                    - Esse consequatur quia autem voluptatem laboriosam iste.
+                    - Quo praesentium ipsam quidem qui voluptatem.
+                  listing_qty: 1
+                  material: ""
+                  platform_product_id: 4688370480807507131
+                  product_attributes:
+                    - battery
+                    - cosmetic
+                    - liquid
+                    - magnetic
+                  product_barcode: xxx
+                  product_height: 10
+                  product_id: 123
+                  product_length: 10
+                  product_name: NSS mate40
+                  product_price: 10.3
+                  product_sku: xxxx
+                  product_weight: 10
+                  product_width: 10
+                  purpose: ""
+                  qty: 1
+                  requires_shipping: true
+                - declared_cn_name: NSS
+                  declared_en_name: NSS
+                  declared_value_in_eur: 10.07
+                  declared_value_in_usd: 10.07
+                  ext_order_item_id: Quo rerum.
+                  ext_product_id: Aut consequatur.
+                  hs_code: xxx
+                  id: 123
+                  images:
+                    - Voluptates ipsa accusamus sed eum qui autem.
+                    - Rerum quod commodi sapiente aut nam recusandae.
+                    - Esse consequatur quia autem voluptatem laboriosam iste.
+                    - Quo praesentium ipsam quidem qui voluptatem.
+                  listing_qty: 1
+                  material: ""
+                  platform_product_id: 4688370480807507131
+                  product_attributes:
+                    - battery
+                    - cosmetic
+                    - liquid
+                    - magnetic
+                  product_barcode: xxx
+                  product_height: 10
+                  product_id: 123
+                  product_length: 10
+                  product_name: NSS mate40
+                  product_price: 10.3
+                  product_sku: xxxx
+                  product_weight: 10
+                  product_width: 10
+                  purpose: ""
+                  qty: 1
+                  requires_shipping: true
+                - declared_cn_name: NSS
+                  declared_en_name: NSS
+                  declared_value_in_eur: 10.07
+                  declared_value_in_usd: 10.07
+                  ext_order_item_id: Quo rerum.
+                  ext_product_id: Aut consequatur.
+                  hs_code: xxx
+                  id: 123
+                  images:
+                    - Voluptates ipsa accusamus sed eum qui autem.
+                    - Rerum quod commodi sapiente aut nam recusandae.
+                    - Esse consequatur quia autem voluptatem laboriosam iste.
+                    - Quo praesentium ipsam quidem qui voluptatem.
+                  listing_qty: 1
+                  material: ""
+                  platform_product_id: 4688370480807507131
+                  product_attributes:
+                    - battery
+                    - cosmetic
+                    - liquid
+                    - magnetic
+                  product_barcode: xxx
+                  product_height: 10
+                  product_id: 123
+                  product_length: 10
+                  product_name: NSS mate40
+                  product_price: 10.3
+                  product_sku: xxxx
+                  product_weight: 10
+                  product_width: 10
+                  purpose: ""
+                  qty: 1
+                  requires_shipping: true
+                - declared_cn_name: NSS
+                  declared_en_name: NSS
+                  declared_value_in_eur: 10.07
+                  declared_value_in_usd: 10.07
+                  ext_order_item_id: Quo rerum.
+                  ext_product_id: Aut consequatur.
+                  hs_code: xxx
+                  id: 123
+                  images:
+                    - Voluptates ipsa accusamus sed eum qui autem.
+                    - Rerum quod commodi sapiente aut nam recusandae.
+                    - Esse consequatur quia autem voluptatem laboriosam iste.
+                    - Quo praesentium ipsam quidem qui voluptatem.
+                  listing_qty: 1
+                  material: ""
+                  platform_product_id: 4688370480807507131
+                  product_attributes:
+                    - battery
+                    - cosmetic
+                    - liquid
+                    - magnetic
+                  product_barcode: xxx
+                  product_height: 10
+                  product_id: 123
+                  product_length: 10
+                  product_name: NSS mate40
+                  product_price: 10.3
+                  product_sku: xxxx
+                  product_weight: 10
+                  product_width: 10
+                  purpose: ""
+                  qty: 1
+                  requires_shipping: true
+              mode: 158171744064274954
+              not_accept_platform_update: true
+              not_accept_platform_update_item: true
+              note: Iusto aut aut ut velit sequi nemo.
+              nss_tracking_number: Quia est aut dolorem vel eaque.
+              nss_tracking_url: Nam accusamus est.
+              offline: true
+              order_number: "123"
+              platform: shopify
+              platform_info:
+                cancelled_at: "2020-01-01 00:00:00"
+                closed_at: "2020-01-01 00:00:00"
+                created_at: Quia sed ut itaque aut.
+                fulfillment_status: fulfillment
+                not_accept_update: true
+                order_id: 12344xxx
+                order_link: Perferendis voluptas fugit blanditiis harum.
+                order_no: platform order no
+                paid_status: Paid
+                platform_status: pending
+                tags:
+                  - Quo eligendi libero vero consectetur beatae neque.
+                  - Dolores est animi ipsa recusandae cumque aut.
+                  - Quia error quas eum ea quisquam.
+              receiver_info:
+                address1: address1
+                address2: address2
+                certificate_code: "3455233"
+                certificate_period: "2028-01-01"
+                certificate_type: ID
+                city_name: SZ
+                company: China
+                country_code: US
+                country_name: US
+                email: 123@test.com
+                first_name: He
+                last_name: John
+                name: He
+                phone_number: 150xxxxxxxx
+                state_code: S
+                state_name: U
+                zip_code: "10016"
+              remark: Aut eos natus libero cupiditate.
+              request_shipping_at: Sequi aut dolorem veniam.
+              ship_date: Id eaque.
+              status: 1
+              status_name: new
+              store_id: 1
+              store_name: ST
+              tax_info:
+                customer_tariff_country_code: xxx
+                customer_tariff_id: 1
+                customer_tariff_number: xxxx
+                customer_tariff_number_type: ioss
+              warehouse_id: 1
+              warehouse_name: SZ
+            - cancel_status: 1
+              channel_id: 1
+              channel_name: SF
+              created_at: Qui dolores modi corporis qui.
+              customer_code: Possimus quos.
+              customer_order_id: xxx1234
+              fee_info:
+                actual_weight: 1000
+                charge_weight: 1000
+                currency: USD
+                fuel_fee: 5
+                fulfillment_fee: 3
+                handling_fee: 5
+                max_normal_days: 1607265350
+                min_normal_days: 1149943555
+                misc_fee: 5
+                package_fee: 5
+                processing_fee: 5
+                registration_fee: 5
+                total_price: 1
+                vat: 5
+                volume_factor: 149724400
+                volume_weight: 1000
+              hold_reason:
+                - code: 2035502774
+                  en_reason: Accusamus ut doloremque praesentium ea nesciunt.
+                  product_id: 4830887142123847081
+                  reason: Aut autem totam.
+                  type: At delectus deleniti delectus.
+                - code: 2035502774
+                  en_reason: Accusamus ut doloremque praesentium ea nesciunt.
+                  product_id: 4830887142123847081
+                  reason: Aut autem totam.
+                  type: At delectus deleniti delectus.
+                - code: 2035502774
+                  en_reason: Accusamus ut doloremque praesentium ea nesciunt.
+                  product_id: 4830887142123847081
+                  reason: Aut autem totam.
+                  type: At delectus deleniti delectus.
+              hold_status: false
+              inbound_order_number: Optio rerum amet est consequatur illum.
+              items:
+                - declared_cn_name: NSS
+                  declared_en_name: NSS
+                  declared_value_in_eur: 10.07
+                  declared_value_in_usd: 10.07
+                  ext_order_item_id: Quo rerum.
+                  ext_product_id: Aut consequatur.
+                  hs_code: xxx
+                  id: 123
+                  images:
+                    - Voluptates ipsa accusamus sed eum qui autem.
+                    - Rerum quod commodi sapiente aut nam recusandae.
+                    - Esse consequatur quia autem voluptatem laboriosam iste.
+                    - Quo praesentium ipsam quidem qui voluptatem.
+                  listing_qty: 1
+                  material: ""
+                  platform_product_id: 4688370480807507131
+                  product_attributes:
+                    - battery
+                    - cosmetic
+                    - liquid
+                    - magnetic
+                  product_barcode: xxx
+                  product_height: 10
+                  product_id: 123
+                  product_length: 10
+                  product_name: NSS mate40
+                  product_price: 10.3
+                  product_sku: xxxx
+                  product_weight: 10
+                  product_width: 10
+                  purpose: ""
+                  qty: 1
+                  requires_shipping: true
+                - declared_cn_name: NSS
+                  declared_en_name: NSS
+                  declared_value_in_eur: 10.07
+                  declared_value_in_usd: 10.07
+                  ext_order_item_id: Quo rerum.
+                  ext_product_id: Aut consequatur.
+                  hs_code: xxx
+                  id: 123
+                  images:
+                    - Voluptates ipsa accusamus sed eum qui autem.
+                    - Rerum quod commodi sapiente aut nam recusandae.
+                    - Esse consequatur quia autem voluptatem laboriosam iste.
+                    - Quo praesentium ipsam quidem qui voluptatem.
+                  listing_qty: 1
+                  material: ""
+                  platform_product_id: 4688370480807507131
+                  product_attributes:
+                    - battery
+                    - cosmetic
+                    - liquid
+                    - magnetic
+                  product_barcode: xxx
+                  product_height: 10
+                  product_id: 123
+                  product_length: 10
+                  product_name: NSS mate40
+                  product_price: 10.3
+                  product_sku: xxxx
+                  product_weight: 10
+                  product_width: 10
+                  purpose: ""
+                  qty: 1
+                  requires_shipping: true
+                - declared_cn_name: NSS
+                  declared_en_name: NSS
+                  declared_value_in_eur: 10.07
+                  declared_value_in_usd: 10.07
+                  ext_order_item_id: Quo rerum.
+                  ext_product_id: Aut consequatur.
+                  hs_code: xxx
+                  id: 123
+                  images:
+                    - Voluptates ipsa accusamus sed eum qui autem.
+                    - Rerum quod commodi sapiente aut nam recusandae.
+                    - Esse consequatur quia autem voluptatem laboriosam iste.
+                    - Quo praesentium ipsam quidem qui voluptatem.
+                  listing_qty: 1
+                  material: ""
+                  platform_product_id: 4688370480807507131
+                  product_attributes:
+                    - battery
+                    - cosmetic
+                    - liquid
+                    - magnetic
+                  product_barcode: xxx
+                  product_height: 10
+                  product_id: 123
+                  product_length: 10
+                  product_name: NSS mate40
+                  product_price: 10.3
+                  product_sku: xxxx
+                  product_weight: 10
+                  product_width: 10
+                  purpose: ""
+                  qty: 1
+                  requires_shipping: true
+                - declared_cn_name: NSS
+                  declared_en_name: NSS
+                  declared_value_in_eur: 10.07
+                  declared_value_in_usd: 10.07
+                  ext_order_item_id: Quo rerum.
+                  ext_product_id: Aut consequatur.
+                  hs_code: xxx
+                  id: 123
+                  images:
+                    - Voluptates ipsa accusamus sed eum qui autem.
+                    - Rerum quod commodi sapiente aut nam recusandae.
+                    - Esse consequatur quia autem voluptatem laboriosam iste.
+                    - Quo praesentium ipsam quidem qui voluptatem.
+                  listing_qty: 1
+                  material: ""
+                  platform_product_id: 4688370480807507131
+                  product_attributes:
+                    - battery
+                    - cosmetic
+                    - liquid
+                    - magnetic
+                  product_barcode: xxx
+                  product_height: 10
+                  product_id: 123
+                  product_length: 10
+                  product_name: NSS mate40
+                  product_price: 10.3
+                  product_sku: xxxx
+                  product_weight: 10
+                  product_width: 10
+                  purpose: ""
+                  qty: 1
+                  requires_shipping: true
+              mode: 158171744064274954
+              not_accept_platform_update: true
+              not_accept_platform_update_item: true
+              note: Iusto aut aut ut velit sequi nemo.
+              nss_tracking_number: Quia est aut dolorem vel eaque.
+              nss_tracking_url: Nam accusamus est.
+              offline: true
+              order_number: "123"
+              platform: shopify
+              platform_info:
+                cancelled_at: "2020-01-01 00:00:00"
+                closed_at: "2020-01-01 00:00:00"
+                created_at: Quia sed ut itaque aut.
+                fulfillment_status: fulfillment
+                not_accept_update: true
+                order_id: 12344xxx
+                order_link: Perferendis voluptas fugit blanditiis harum.
+                order_no: platform order no
+                paid_status: Paid
+                platform_status: pending
+                tags:
+                  - Quo eligendi libero vero consectetur beatae neque.
+                  - Dolores est animi ipsa recusandae cumque aut.
+                  - Quia error quas eum ea quisquam.
+              receiver_info:
+                address1: address1
+                address2: address2
+                certificate_code: "3455233"
+                certificate_period: "2028-01-01"
+                certificate_type: ID
+                city_name: SZ
+                company: China
+                country_code: US
+                country_name: US
+                email: 123@test.com
+                first_name: He
+                last_name: John
+                name: He
+                phone_number: 150xxxxxxxx
+                state_code: S
+                state_name: U
+                zip_code: "10016"
+              remark: Aut eos natus libero cupiditate.
+              request_shipping_at: Sequi aut dolorem veniam.
+              ship_date: Id eaque.
+              status: 1
+              status_name: new
+              store_id: 1
+              store_name: ST
+              tax_info:
+                customer_tariff_country_code: xxx
+                customer_tariff_id: 1
+                customer_tariff_number: xxxx
+                customer_tariff_number_type: ioss
+              warehouse_id: 1
+              warehouse_name: SZ
+          meta:
+            current: 1
+            page_size: 1
+            total: 1
+        message: description error information
+      required:
+        - code
+        - message
+    OrderInfo:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderData'
+          description: outbounds data
+          example:
+            - cancel_status: 1
+              channel_id: 1
+              channel_name: SF
+              created_at: Qui dolores modi corporis qui.
+              customer_code: Possimus quos.
+              customer_order_id: xxx1234
+              fee_info:
+                actual_weight: 1000
+                charge_weight: 1000
+                currency: USD
+                fuel_fee: 5
+                fulfillment_fee: 3
+                handling_fee: 5
+                max_normal_days: 1607265350
+                min_normal_days: 1149943555
+                misc_fee: 5
+                package_fee: 5
+                processing_fee: 5
+                registration_fee: 5
+                total_price: 1
+                vat: 5
+                volume_factor: 149724400
+                volume_weight: 1000
+              hold_reason:
+                - code: 2035502774
+                  en_reason: Accusamus ut doloremque praesentium ea nesciunt.
+                  product_id: 4830887142123847081
+                  reason: Aut autem totam.
+                  type: At delectus deleniti delectus.
+                - code: 2035502774
+                  en_reason: Accusamus ut doloremque praesentium ea nesciunt.
+                  product_id: 4830887142123847081
+                  reason: Aut autem totam.
+                  type: At delectus deleniti delectus.
+                - code: 2035502774
+                  en_reason: Accusamus ut doloremque praesentium ea nesciunt.
+                  product_id: 4830887142123847081
+                  reason: Aut autem totam.
+                  type: At delectus deleniti delectus.
+              hold_status: false
+              inbound_order_number: Optio rerum amet est consequatur illum.
+              items:
+                - declared_cn_name: NSS
+                  declared_en_name: NSS
+                  declared_value_in_eur: 10.07
+                  declared_value_in_usd: 10.07
+                  ext_order_item_id: Quo rerum.
+                  ext_product_id: Aut consequatur.
+                  hs_code: xxx
+                  id: 123
+                  images:
+                    - Voluptates ipsa accusamus sed eum qui autem.
+                    - Rerum quod commodi sapiente aut nam recusandae.
+                    - Esse consequatur quia autem voluptatem laboriosam iste.
+                    - Quo praesentium ipsam quidem qui voluptatem.
+                  listing_qty: 1
+                  material: ""
+                  platform_product_id: 4688370480807507131
+                  product_attributes:
+                    - battery
+                    - cosmetic
+                    - liquid
+                    - magnetic
+                  product_barcode: xxx
+                  product_height: 10
+                  product_id: 123
+                  product_length: 10
+                  product_name: NSS mate40
+                  product_price: 10.3
+                  product_sku: xxxx
+                  product_weight: 10
+                  product_width: 10
+                  purpose: ""
+                  qty: 1
+                  requires_shipping: true
+                - declared_cn_name: NSS
+                  declared_en_name: NSS
+                  declared_value_in_eur: 10.07
+                  declared_value_in_usd: 10.07
+                  ext_order_item_id: Quo rerum.
+                  ext_product_id: Aut consequatur.
+                  hs_code: xxx
+                  id: 123
+                  images:
+                    - Voluptates ipsa accusamus sed eum qui autem.
+                    - Rerum quod commodi sapiente aut nam recusandae.
+                    - Esse consequatur quia autem voluptatem laboriosam iste.
+                    - Quo praesentium ipsam quidem qui voluptatem.
+                  listing_qty: 1
+                  material: ""
+                  platform_product_id: 4688370480807507131
+                  product_attributes:
+                    - battery
+                    - cosmetic
+                    - liquid
+                    - magnetic
+                  product_barcode: xxx
+                  product_height: 10
+                  product_id: 123
+                  product_length: 10
+                  product_name: NSS mate40
+                  product_price: 10.3
+                  product_sku: xxxx
+                  product_weight: 10
+                  product_width: 10
+                  purpose: ""
+                  qty: 1
+                  requires_shipping: true
+                - declared_cn_name: NSS
+                  declared_en_name: NSS
+                  declared_value_in_eur: 10.07
+                  declared_value_in_usd: 10.07
+                  ext_order_item_id: Quo rerum.
+                  ext_product_id: Aut consequatur.
+                  hs_code: xxx
+                  id: 123
+                  images:
+                    - Voluptates ipsa accusamus sed eum qui autem.
+                    - Rerum quod commodi sapiente aut nam recusandae.
+                    - Esse consequatur quia autem voluptatem laboriosam iste.
+                    - Quo praesentium ipsam quidem qui voluptatem.
+                  listing_qty: 1
+                  material: ""
+                  platform_product_id: 4688370480807507131
+                  product_attributes:
+                    - battery
+                    - cosmetic
+                    - liquid
+                    - magnetic
+                  product_barcode: xxx
+                  product_height: 10
+                  product_id: 123
+                  product_length: 10
+                  product_name: NSS mate40
+                  product_price: 10.3
+                  product_sku: xxxx
+                  product_weight: 10
+                  product_width: 10
+                  purpose: ""
+                  qty: 1
+                  requires_shipping: true
+                - declared_cn_name: NSS
+                  declared_en_name: NSS
+                  declared_value_in_eur: 10.07
+                  declared_value_in_usd: 10.07
+                  ext_order_item_id: Quo rerum.
+                  ext_product_id: Aut consequatur.
+                  hs_code: xxx
+                  id: 123
+                  images:
+                    - Voluptates ipsa accusamus sed eum qui autem.
+                    - Rerum quod commodi sapiente aut nam recusandae.
+                    - Esse consequatur quia autem voluptatem laboriosam iste.
+                    - Quo praesentium ipsam quidem qui voluptatem.
+                  listing_qty: 1
+                  material: ""
+                  platform_product_id: 4688370480807507131
+                  product_attributes:
+                    - battery
+                    - cosmetic
+                    - liquid
+                    - magnetic
+                  product_barcode: xxx
+                  product_height: 10
+                  product_id: 123
+                  product_length: 10
+                  product_name: NSS mate40
+                  product_price: 10.3
+                  product_sku: xxxx
+                  product_weight: 10
+                  product_width: 10
+                  purpose: ""
+                  qty: 1
+                  requires_shipping: true
+              mode: 158171744064274954
+              not_accept_platform_update: true
+              not_accept_platform_update_item: true
+              note: Iusto aut aut ut velit sequi nemo.
+              nss_tracking_number: Quia est aut dolorem vel eaque.
+              nss_tracking_url: Nam accusamus est.
+              offline: true
+              order_number: "123"
+              platform: shopify
+              platform_info:
+                cancelled_at: "2020-01-01 00:00:00"
+                closed_at: "2020-01-01 00:00:00"
+                created_at: Quia sed ut itaque aut.
+                fulfillment_status: fulfillment
+                not_accept_update: true
+                order_id: 12344xxx
+                order_link: Perferendis voluptas fugit blanditiis harum.
+                order_no: platform order no
+                paid_status: Paid
+                platform_status: pending
+                tags:
+                  - Quo eligendi libero vero consectetur beatae neque.
+                  - Dolores est animi ipsa recusandae cumque aut.
+                  - Quia error quas eum ea quisquam.
+              receiver_info:
+                address1: address1
+                address2: address2
+                certificate_code: "3455233"
+                certificate_period: "2028-01-01"
+                certificate_type: ID
+                city_name: SZ
+                company: China
+                country_code: US
+                country_name: US
+                email: 123@test.com
+                first_name: He
+                last_name: John
+                name: He
+                phone_number: 150xxxxxxxx
+                state_code: S
+                state_name: U
+                zip_code: "10016"
+              remark: Aut eos natus libero cupiditate.
+              request_shipping_at: Sequi aut dolorem veniam.
+              ship_date: Id eaque.
+              status: 1
+              status_name: new
+              store_id: 1
+              store_name: ST
+              tax_info:
+                customer_tariff_country_code: xxx
+                customer_tariff_id: 1
+                customer_tariff_number: xxxx
+                customer_tariff_number_type: ioss
+              warehouse_id: 1
+              warehouse_name: SZ
+            - cancel_status: 1
+              channel_id: 1
+              channel_name: SF
+              created_at: Qui dolores modi corporis qui.
+              customer_code: Possimus quos.
+              customer_order_id: xxx1234
+              fee_info:
+                actual_weight: 1000
+                charge_weight: 1000
+                currency: USD
+                fuel_fee: 5
+                fulfillment_fee: 3
+                handling_fee: 5
+                max_normal_days: 1607265350
+                min_normal_days: 1149943555
+                misc_fee: 5
+                package_fee: 5
+                processing_fee: 5
+                registration_fee: 5
+                total_price: 1
+                vat: 5
+                volume_factor: 149724400
+                volume_weight: 1000
+              hold_reason:
+                - code: 2035502774
+                  en_reason: Accusamus ut doloremque praesentium ea nesciunt.
+                  product_id: 4830887142123847081
+                  reason: Aut autem totam.
+                  type: At delectus deleniti delectus.
+                - code: 2035502774
+                  en_reason: Accusamus ut doloremque praesentium ea nesciunt.
+                  product_id: 4830887142123847081
+                  reason: Aut autem totam.
+                  type: At delectus deleniti delectus.
+                - code: 2035502774
+                  en_reason: Accusamus ut doloremque praesentium ea nesciunt.
+                  product_id: 4830887142123847081
+                  reason: Aut autem totam.
+                  type: At delectus deleniti delectus.
+              hold_status: false
+              inbound_order_number: Optio rerum amet est consequatur illum.
+              items:
+                - declared_cn_name: NSS
+                  declared_en_name: NSS
+                  declared_value_in_eur: 10.07
+                  declared_value_in_usd: 10.07
+                  ext_order_item_id: Quo rerum.
+                  ext_product_id: Aut consequatur.
+                  hs_code: xxx
+                  id: 123
+                  images:
+                    - Voluptates ipsa accusamus sed eum qui autem.
+                    - Rerum quod commodi sapiente aut nam recusandae.
+                    - Esse consequatur quia autem voluptatem laboriosam iste.
+                    - Quo praesentium ipsam quidem qui voluptatem.
+                  listing_qty: 1
+                  material: ""
+                  platform_product_id: 4688370480807507131
+                  product_attributes:
+                    - battery
+                    - cosmetic
+                    - liquid
+                    - magnetic
+                  product_barcode: xxx
+                  product_height: 10
+                  product_id: 123
+                  product_length: 10
+                  product_name: NSS mate40
+                  product_price: 10.3
+                  product_sku: xxxx
+                  product_weight: 10
+                  product_width: 10
+                  purpose: ""
+                  qty: 1
+                  requires_shipping: true
+                - declared_cn_name: NSS
+                  declared_en_name: NSS
+                  declared_value_in_eur: 10.07
+                  declared_value_in_usd: 10.07
+                  ext_order_item_id: Quo rerum.
+                  ext_product_id: Aut consequatur.
+                  hs_code: xxx
+                  id: 123
+                  images:
+                    - Voluptates ipsa accusamus sed eum qui autem.
+                    - Rerum quod commodi sapiente aut nam recusandae.
+                    - Esse consequatur quia autem voluptatem laboriosam iste.
+                    - Quo praesentium ipsam quidem qui voluptatem.
+                  listing_qty: 1
+                  material: ""
+                  platform_product_id: 4688370480807507131
+                  product_attributes:
+                    - battery
+                    - cosmetic
+                    - liquid
+                    - magnetic
+                  product_barcode: xxx
+                  product_height: 10
+                  product_id: 123
+                  product_length: 10
+                  product_name: NSS mate40
+                  product_price: 10.3
+                  product_sku: xxxx
+                  product_weight: 10
+                  product_width: 10
+                  purpose: ""
+                  qty: 1
+                  requires_shipping: true
+                - declared_cn_name: NSS
+                  declared_en_name: NSS
+                  declared_value_in_eur: 10.07
+                  declared_value_in_usd: 10.07
+                  ext_order_item_id: Quo rerum.
+                  ext_product_id: Aut consequatur.
+                  hs_code: xxx
+                  id: 123
+                  images:
+                    - Voluptates ipsa accusamus sed eum qui autem.
+                    - Rerum quod commodi sapiente aut nam recusandae.
+                    - Esse consequatur quia autem voluptatem laboriosam iste.
+                    - Quo praesentium ipsam quidem qui voluptatem.
+                  listing_qty: 1
+                  material: ""
+                  platform_product_id: 4688370480807507131
+                  product_attributes:
+                    - battery
+                    - cosmetic
+                    - liquid
+                    - magnetic
+                  product_barcode: xxx
+                  product_height: 10
+                  product_id: 123
+                  product_length: 10
+                  product_name: NSS mate40
+                  product_price: 10.3
+                  product_sku: xxxx
+                  product_weight: 10
+                  product_width: 10
+                  purpose: ""
+                  qty: 1
+                  requires_shipping: true
+                - declared_cn_name: NSS
+                  declared_en_name: NSS
+                  declared_value_in_eur: 10.07
+                  declared_value_in_usd: 10.07
+                  ext_order_item_id: Quo rerum.
+                  ext_product_id: Aut consequatur.
+                  hs_code: xxx
+                  id: 123
+                  images:
+                    - Voluptates ipsa accusamus sed eum qui autem.
+                    - Rerum quod commodi sapiente aut nam recusandae.
+                    - Esse consequatur quia autem voluptatem laboriosam iste.
+                    - Quo praesentium ipsam quidem qui voluptatem.
+                  listing_qty: 1
+                  material: ""
+                  platform_product_id: 4688370480807507131
+                  product_attributes:
+                    - battery
+                    - cosmetic
+                    - liquid
+                    - magnetic
+                  product_barcode: xxx
+                  product_height: 10
+                  product_id: 123
+                  product_length: 10
+                  product_name: NSS mate40
+                  product_price: 10.3
+                  product_sku: xxxx
+                  product_weight: 10
+                  product_width: 10
+                  purpose: ""
+                  qty: 1
+                  requires_shipping: true
+              mode: 158171744064274954
+              not_accept_platform_update: true
+              not_accept_platform_update_item: true
+              note: Iusto aut aut ut velit sequi nemo.
+              nss_tracking_number: Quia est aut dolorem vel eaque.
+              nss_tracking_url: Nam accusamus est.
+              offline: true
+              order_number: "123"
+              platform: shopify
+              platform_info:
+                cancelled_at: "2020-01-01 00:00:00"
+                closed_at: "2020-01-01 00:00:00"
+                created_at: Quia sed ut itaque aut.
+                fulfillment_status: fulfillment
+                not_accept_update: true
+                order_id: 12344xxx
+                order_link: Perferendis voluptas fugit blanditiis harum.
+                order_no: platform order no
+                paid_status: Paid
+                platform_status: pending
+                tags:
+                  - Quo eligendi libero vero consectetur beatae neque.
+                  - Dolores est animi ipsa recusandae cumque aut.
+                  - Quia error quas eum ea quisquam.
+              receiver_info:
+                address1: address1
+                address2: address2
+                certificate_code: "3455233"
+                certificate_period: "2028-01-01"
+                certificate_type: ID
+                city_name: SZ
+                company: China
+                country_code: US
+                country_name: US
+                email: 123@test.com
+                first_name: He
+                last_name: John
+                name: He
+                phone_number: 150xxxxxxxx
+                state_code: S
+                state_name: U
+                zip_code: "10016"
+              remark: Aut eos natus libero cupiditate.
+              request_shipping_at: Sequi aut dolorem veniam.
+              ship_date: Id eaque.
+              status: 1
+              status_name: new
+              store_id: 1
+              store_name: ST
+              tax_info:
+                customer_tariff_country_code: xxx
+                customer_tariff_id: 1
+                customer_tariff_number: xxxx
+                customer_tariff_number_type: ioss
+              warehouse_id: 1
+              warehouse_name: SZ
+            - cancel_status: 1
+              channel_id: 1
+              channel_name: SF
+              created_at: Qui dolores modi corporis qui.
+              customer_code: Possimus quos.
+              customer_order_id: xxx1234
+              fee_info:
+                actual_weight: 1000
+                charge_weight: 1000
+                currency: USD
+                fuel_fee: 5
+                fulfillment_fee: 3
+                handling_fee: 5
+                max_normal_days: 1607265350
+                min_normal_days: 1149943555
+                misc_fee: 5
+                package_fee: 5
+                processing_fee: 5
+                registration_fee: 5
+                total_price: 1
+                vat: 5
+                volume_factor: 149724400
+                volume_weight: 1000
+              hold_reason:
+                - code: 2035502774
+                  en_reason: Accusamus ut doloremque praesentium ea nesciunt.
+                  product_id: 4830887142123847081
+                  reason: Aut autem totam.
+                  type: At delectus deleniti delectus.
+                - code: 2035502774
+                  en_reason: Accusamus ut doloremque praesentium ea nesciunt.
+                  product_id: 4830887142123847081
+                  reason: Aut autem totam.
+                  type: At delectus deleniti delectus.
+                - code: 2035502774
+                  en_reason: Accusamus ut doloremque praesentium ea nesciunt.
+                  product_id: 4830887142123847081
+                  reason: Aut autem totam.
+                  type: At delectus deleniti delectus.
+              hold_status: false
+              inbound_order_number: Optio rerum amet est consequatur illum.
+              items:
+                - declared_cn_name: NSS
+                  declared_en_name: NSS
+                  declared_value_in_eur: 10.07
+                  declared_value_in_usd: 10.07
+                  ext_order_item_id: Quo rerum.
+                  ext_product_id: Aut consequatur.
+                  hs_code: xxx
+                  id: 123
+                  images:
+                    - Voluptates ipsa accusamus sed eum qui autem.
+                    - Rerum quod commodi sapiente aut nam recusandae.
+                    - Esse consequatur quia autem voluptatem laboriosam iste.
+                    - Quo praesentium ipsam quidem qui voluptatem.
+                  listing_qty: 1
+                  material: ""
+                  platform_product_id: 4688370480807507131
+                  product_attributes:
+                    - battery
+                    - cosmetic
+                    - liquid
+                    - magnetic
+                  product_barcode: xxx
+                  product_height: 10
+                  product_id: 123
+                  product_length: 10
+                  product_name: NSS mate40
+                  product_price: 10.3
+                  product_sku: xxxx
+                  product_weight: 10
+                  product_width: 10
+                  purpose: ""
+                  qty: 1
+                  requires_shipping: true
+                - declared_cn_name: NSS
+                  declared_en_name: NSS
+                  declared_value_in_eur: 10.07
+                  declared_value_in_usd: 10.07
+                  ext_order_item_id: Quo rerum.
+                  ext_product_id: Aut consequatur.
+                  hs_code: xxx
+                  id: 123
+                  images:
+                    - Voluptates ipsa accusamus sed eum qui autem.
+                    - Rerum quod commodi sapiente aut nam recusandae.
+                    - Esse consequatur quia autem voluptatem laboriosam iste.
+                    - Quo praesentium ipsam quidem qui voluptatem.
+                  listing_qty: 1
+                  material: ""
+                  platform_product_id: 4688370480807507131
+                  product_attributes:
+                    - battery
+                    - cosmetic
+                    - liquid
+                    - magnetic
+                  product_barcode: xxx
+                  product_height: 10
+                  product_id: 123
+                  product_length: 10
+                  product_name: NSS mate40
+                  product_price: 10.3
+                  product_sku: xxxx
+                  product_weight: 10
+                  product_width: 10
+                  purpose: ""
+                  qty: 1
+                  requires_shipping: true
+                - declared_cn_name: NSS
+                  declared_en_name: NSS
+                  declared_value_in_eur: 10.07
+                  declared_value_in_usd: 10.07
+                  ext_order_item_id: Quo rerum.
+                  ext_product_id: Aut consequatur.
+                  hs_code: xxx
+                  id: 123
+                  images:
+                    - Voluptates ipsa accusamus sed eum qui autem.
+                    - Rerum quod commodi sapiente aut nam recusandae.
+                    - Esse consequatur quia autem voluptatem laboriosam iste.
+                    - Quo praesentium ipsam quidem qui voluptatem.
+                  listing_qty: 1
+                  material: ""
+                  platform_product_id: 4688370480807507131
+                  product_attributes:
+                    - battery
+                    - cosmetic
+                    - liquid
+                    - magnetic
+                  product_barcode: xxx
+                  product_height: 10
+                  product_id: 123
+                  product_length: 10
+                  product_name: NSS mate40
+                  product_price: 10.3
+                  product_sku: xxxx
+                  product_weight: 10
+                  product_width: 10
+                  purpose: ""
+                  qty: 1
+                  requires_shipping: true
+                - declared_cn_name: NSS
+                  declared_en_name: NSS
+                  declared_value_in_eur: 10.07
+                  declared_value_in_usd: 10.07
+                  ext_order_item_id: Quo rerum.
+                  ext_product_id: Aut consequatur.
+                  hs_code: xxx
+                  id: 123
+                  images:
+                    - Voluptates ipsa accusamus sed eum qui autem.
+                    - Rerum quod commodi sapiente aut nam recusandae.
+                    - Esse consequatur quia autem voluptatem laboriosam iste.
+                    - Quo praesentium ipsam quidem qui voluptatem.
+                  listing_qty: 1
+                  material: ""
+                  platform_product_id: 4688370480807507131
+                  product_attributes:
+                    - battery
+                    - cosmetic
+                    - liquid
+                    - magnetic
+                  product_barcode: xxx
+                  product_height: 10
+                  product_id: 123
+                  product_length: 10
+                  product_name: NSS mate40
+                  product_price: 10.3
+                  product_sku: xxxx
+                  product_weight: 10
+                  product_width: 10
+                  purpose: ""
+                  qty: 1
+                  requires_shipping: true
+              mode: 158171744064274954
+              not_accept_platform_update: true
+              not_accept_platform_update_item: true
+              note: Iusto aut aut ut velit sequi nemo.
+              nss_tracking_number: Quia est aut dolorem vel eaque.
+              nss_tracking_url: Nam accusamus est.
+              offline: true
+              order_number: "123"
+              platform: shopify
+              platform_info:
+                cancelled_at: "2020-01-01 00:00:00"
+                closed_at: "2020-01-01 00:00:00"
+                created_at: Quia sed ut itaque aut.
+                fulfillment_status: fulfillment
+                not_accept_update: true
+                order_id: 12344xxx
+                order_link: Perferendis voluptas fugit blanditiis harum.
+                order_no: platform order no
+                paid_status: Paid
+                platform_status: pending
+                tags:
+                  - Quo eligendi libero vero consectetur beatae neque.
+                  - Dolores est animi ipsa recusandae cumque aut.
+                  - Quia error quas eum ea quisquam.
+              receiver_info:
+                address1: address1
+                address2: address2
+                certificate_code: "3455233"
+                certificate_period: "2028-01-01"
+                certificate_type: ID
+                city_name: SZ
+                company: China
+                country_code: US
+                country_name: US
+                email: 123@test.com
+                first_name: He
+                last_name: John
+                name: He
+                phone_number: 150xxxxxxxx
+                state_code: S
+                state_name: U
+                zip_code: "10016"
+              remark: Aut eos natus libero cupiditate.
+              request_shipping_at: Sequi aut dolorem veniam.
+              ship_date: Id eaque.
+              status: 1
+              status_name: new
+              store_id: 1
+              store_name: ST
+              tax_info:
+                customer_tariff_country_code: xxx
+                customer_tariff_id: 1
+                customer_tariff_number: xxxx
+                customer_tariff_number_type: ioss
+              warehouse_id: 1
+              warehouse_name: SZ
+        meta:
+          $ref: '#/components/schemas/MetaData'
+      description: OrderInfo describes the order info
+      example:
+        list:
+          - cancel_status: 1
+            channel_id: 1
+            channel_name: SF
+            created_at: Qui dolores modi corporis qui.
+            customer_code: Possimus quos.
+            customer_order_id: xxx1234
+            fee_info:
+              actual_weight: 1000
+              charge_weight: 1000
+              currency: USD
+              fuel_fee: 5
+              fulfillment_fee: 3
+              handling_fee: 5
+              max_normal_days: 1607265350
+              min_normal_days: 1149943555
+              misc_fee: 5
+              package_fee: 5
+              processing_fee: 5
+              registration_fee: 5
+              total_price: 1
+              vat: 5
+              volume_factor: 149724400
+              volume_weight: 1000
+            hold_reason:
+              - code: 2035502774
+                en_reason: Accusamus ut doloremque praesentium ea nesciunt.
+                product_id: 4830887142123847081
+                reason: Aut autem totam.
+                type: At delectus deleniti delectus.
+              - code: 2035502774
+                en_reason: Accusamus ut doloremque praesentium ea nesciunt.
+                product_id: 4830887142123847081
+                reason: Aut autem totam.
+                type: At delectus deleniti delectus.
+              - code: 2035502774
+                en_reason: Accusamus ut doloremque praesentium ea nesciunt.
+                product_id: 4830887142123847081
+                reason: Aut autem totam.
+                type: At delectus deleniti delectus.
+            hold_status: false
+            inbound_order_number: Optio rerum amet est consequatur illum.
+            items:
+              - declared_cn_name: NSS
+                declared_en_name: NSS
+                declared_value_in_eur: 10.07
+                declared_value_in_usd: 10.07
+                ext_order_item_id: Quo rerum.
+                ext_product_id: Aut consequatur.
+                hs_code: xxx
+                id: 123
+                images:
+                  - Voluptates ipsa accusamus sed eum qui autem.
+                  - Rerum quod commodi sapiente aut nam recusandae.
+                  - Esse consequatur quia autem voluptatem laboriosam iste.
+                  - Quo praesentium ipsam quidem qui voluptatem.
+                listing_qty: 1
+                material: ""
+                platform_product_id: 4688370480807507131
+                product_attributes:
+                  - battery
+                  - cosmetic
+                  - liquid
+                  - magnetic
+                product_barcode: xxx
+                product_height: 10
+                product_id: 123
+                product_length: 10
+                product_name: NSS mate40
+                product_price: 10.3
+                product_sku: xxxx
+                product_weight: 10
+                product_width: 10
+                purpose: ""
+                qty: 1
+                requires_shipping: true
+              - declared_cn_name: NSS
+                declared_en_name: NSS
+                declared_value_in_eur: 10.07
+                declared_value_in_usd: 10.07
+                ext_order_item_id: Quo rerum.
+                ext_product_id: Aut consequatur.
+                hs_code: xxx
+                id: 123
+                images:
+                  - Voluptates ipsa accusamus sed eum qui autem.
+                  - Rerum quod commodi sapiente aut nam recusandae.
+                  - Esse consequatur quia autem voluptatem laboriosam iste.
+                  - Quo praesentium ipsam quidem qui voluptatem.
+                listing_qty: 1
+                material: ""
+                platform_product_id: 4688370480807507131
+                product_attributes:
+                  - battery
+                  - cosmetic
+                  - liquid
+                  - magnetic
+                product_barcode: xxx
+                product_height: 10
+                product_id: 123
+                product_length: 10
+                product_name: NSS mate40
+                product_price: 10.3
+                product_sku: xxxx
+                product_weight: 10
+                product_width: 10
+                purpose: ""
+                qty: 1
+                requires_shipping: true
+              - declared_cn_name: NSS
+                declared_en_name: NSS
+                declared_value_in_eur: 10.07
+                declared_value_in_usd: 10.07
+                ext_order_item_id: Quo rerum.
+                ext_product_id: Aut consequatur.
+                hs_code: xxx
+                id: 123
+                images:
+                  - Voluptates ipsa accusamus sed eum qui autem.
+                  - Rerum quod commodi sapiente aut nam recusandae.
+                  - Esse consequatur quia autem voluptatem laboriosam iste.
+                  - Quo praesentium ipsam quidem qui voluptatem.
+                listing_qty: 1
+                material: ""
+                platform_product_id: 4688370480807507131
+                product_attributes:
+                  - battery
+                  - cosmetic
+                  - liquid
+                  - magnetic
+                product_barcode: xxx
+                product_height: 10
+                product_id: 123
+                product_length: 10
+                product_name: NSS mate40
+                product_price: 10.3
+                product_sku: xxxx
+                product_weight: 10
+                product_width: 10
+                purpose: ""
+                qty: 1
+                requires_shipping: true
+              - declared_cn_name: NSS
+                declared_en_name: NSS
+                declared_value_in_eur: 10.07
+                declared_value_in_usd: 10.07
+                ext_order_item_id: Quo rerum.
+                ext_product_id: Aut consequatur.
+                hs_code: xxx
+                id: 123
+                images:
+                  - Voluptates ipsa accusamus sed eum qui autem.
+                  - Rerum quod commodi sapiente aut nam recusandae.
+                  - Esse consequatur quia autem voluptatem laboriosam iste.
+                  - Quo praesentium ipsam quidem qui voluptatem.
+                listing_qty: 1
+                material: ""
+                platform_product_id: 4688370480807507131
+                product_attributes:
+                  - battery
+                  - cosmetic
+                  - liquid
+                  - magnetic
+                product_barcode: xxx
+                product_height: 10
+                product_id: 123
+                product_length: 10
+                product_name: NSS mate40
+                product_price: 10.3
+                product_sku: xxxx
+                product_weight: 10
+                product_width: 10
+                purpose: ""
+                qty: 1
+                requires_shipping: true
+            mode: 158171744064274954
+            not_accept_platform_update: true
+            not_accept_platform_update_item: true
+            note: Iusto aut aut ut velit sequi nemo.
+            nss_tracking_number: Quia est aut dolorem vel eaque.
+            nss_tracking_url: Nam accusamus est.
+            offline: true
+            order_number: "123"
+            platform: shopify
+            platform_info:
+              cancelled_at: "2020-01-01 00:00:00"
+              closed_at: "2020-01-01 00:00:00"
+              created_at: Quia sed ut itaque aut.
+              fulfillment_status: fulfillment
+              not_accept_update: true
+              order_id: 12344xxx
+              order_link: Perferendis voluptas fugit blanditiis harum.
+              order_no: platform order no
+              paid_status: Paid
+              platform_status: pending
+              tags:
+                - Quo eligendi libero vero consectetur beatae neque.
+                - Dolores est animi ipsa recusandae cumque aut.
+                - Quia error quas eum ea quisquam.
+            receiver_info:
+              address1: address1
+              address2: address2
+              certificate_code: "3455233"
+              certificate_period: "2028-01-01"
+              certificate_type: ID
+              city_name: SZ
+              company: China
+              country_code: US
+              country_name: US
+              email: 123@test.com
+              first_name: He
+              last_name: John
+              name: He
+              phone_number: 150xxxxxxxx
+              state_code: S
+              state_name: U
+              zip_code: "10016"
+            remark: Aut eos natus libero cupiditate.
+            request_shipping_at: Sequi aut dolorem veniam.
+            ship_date: Id eaque.
+            status: 1
+            status_name: new
+            store_id: 1
+            store_name: ST
+            tax_info:
+              customer_tariff_country_code: xxx
+              customer_tariff_id: 1
+              customer_tariff_number: xxxx
+              customer_tariff_number_type: ioss
+            warehouse_id: 1
+            warehouse_name: SZ
+          - cancel_status: 1
+            channel_id: 1
+            channel_name: SF
+            created_at: Qui dolores modi corporis qui.
+            customer_code: Possimus quos.
+            customer_order_id: xxx1234
+            fee_info:
+              actual_weight: 1000
+              charge_weight: 1000
+              currency: USD
+              fuel_fee: 5
+              fulfillment_fee: 3
+              handling_fee: 5
+              max_normal_days: 1607265350
+              min_normal_days: 1149943555
+              misc_fee: 5
+              package_fee: 5
+              processing_fee: 5
+              registration_fee: 5
+              total_price: 1
+              vat: 5
+              volume_factor: 149724400
+              volume_weight: 1000
+            hold_reason:
+              - code: 2035502774
+                en_reason: Accusamus ut doloremque praesentium ea nesciunt.
+                product_id: 4830887142123847081
+                reason: Aut autem totam.
+                type: At delectus deleniti delectus.
+              - code: 2035502774
+                en_reason: Accusamus ut doloremque praesentium ea nesciunt.
+                product_id: 4830887142123847081
+                reason: Aut autem totam.
+                type: At delectus deleniti delectus.
+              - code: 2035502774
+                en_reason: Accusamus ut doloremque praesentium ea nesciunt.
+                product_id: 4830887142123847081
+                reason: Aut autem totam.
+                type: At delectus deleniti delectus.
+            hold_status: false
+            inbound_order_number: Optio rerum amet est consequatur illum.
+            items:
+              - declared_cn_name: NSS
+                declared_en_name: NSS
+                declared_value_in_eur: 10.07
+                declared_value_in_usd: 10.07
+                ext_order_item_id: Quo rerum.
+                ext_product_id: Aut consequatur.
+                hs_code: xxx
+                id: 123
+                images:
+                  - Voluptates ipsa accusamus sed eum qui autem.
+                  - Rerum quod commodi sapiente aut nam recusandae.
+                  - Esse consequatur quia autem voluptatem laboriosam iste.
+                  - Quo praesentium ipsam quidem qui voluptatem.
+                listing_qty: 1
+                material: ""
+                platform_product_id: 4688370480807507131
+                product_attributes:
+                  - battery
+                  - cosmetic
+                  - liquid
+                  - magnetic
+                product_barcode: xxx
+                product_height: 10
+                product_id: 123
+                product_length: 10
+                product_name: NSS mate40
+                product_price: 10.3
+                product_sku: xxxx
+                product_weight: 10
+                product_width: 10
+                purpose: ""
+                qty: 1
+                requires_shipping: true
+              - declared_cn_name: NSS
+                declared_en_name: NSS
+                declared_value_in_eur: 10.07
+                declared_value_in_usd: 10.07
+                ext_order_item_id: Quo rerum.
+                ext_product_id: Aut consequatur.
+                hs_code: xxx
+                id: 123
+                images:
+                  - Voluptates ipsa accusamus sed eum qui autem.
+                  - Rerum quod commodi sapiente aut nam recusandae.
+                  - Esse consequatur quia autem voluptatem laboriosam iste.
+                  - Quo praesentium ipsam quidem qui voluptatem.
+                listing_qty: 1
+                material: ""
+                platform_product_id: 4688370480807507131
+                product_attributes:
+                  - battery
+                  - cosmetic
+                  - liquid
+                  - magnetic
+                product_barcode: xxx
+                product_height: 10
+                product_id: 123
+                product_length: 10
+                product_name: NSS mate40
+                product_price: 10.3
+                product_sku: xxxx
+                product_weight: 10
+                product_width: 10
+                purpose: ""
+                qty: 1
+                requires_shipping: true
+              - declared_cn_name: NSS
+                declared_en_name: NSS
+                declared_value_in_eur: 10.07
+                declared_value_in_usd: 10.07
+                ext_order_item_id: Quo rerum.
+                ext_product_id: Aut consequatur.
+                hs_code: xxx
+                id: 123
+                images:
+                  - Voluptates ipsa accusamus sed eum qui autem.
+                  - Rerum quod commodi sapiente aut nam recusandae.
+                  - Esse consequatur quia autem voluptatem laboriosam iste.
+                  - Quo praesentium ipsam quidem qui voluptatem.
+                listing_qty: 1
+                material: ""
+                platform_product_id: 4688370480807507131
+                product_attributes:
+                  - battery
+                  - cosmetic
+                  - liquid
+                  - magnetic
+                product_barcode: xxx
+                product_height: 10
+                product_id: 123
+                product_length: 10
+                product_name: NSS mate40
+                product_price: 10.3
+                product_sku: xxxx
+                product_weight: 10
+                product_width: 10
+                purpose: ""
+                qty: 1
+                requires_shipping: true
+              - declared_cn_name: NSS
+                declared_en_name: NSS
+                declared_value_in_eur: 10.07
+                declared_value_in_usd: 10.07
+                ext_order_item_id: Quo rerum.
+                ext_product_id: Aut consequatur.
+                hs_code: xxx
+                id: 123
+                images:
+                  - Voluptates ipsa accusamus sed eum qui autem.
+                  - Rerum quod commodi sapiente aut nam recusandae.
+                  - Esse consequatur quia autem voluptatem laboriosam iste.
+                  - Quo praesentium ipsam quidem qui voluptatem.
+                listing_qty: 1
+                material: ""
+                platform_product_id: 4688370480807507131
+                product_attributes:
+                  - battery
+                  - cosmetic
+                  - liquid
+                  - magnetic
+                product_barcode: xxx
+                product_height: 10
+                product_id: 123
+                product_length: 10
+                product_name: NSS mate40
+                product_price: 10.3
+                product_sku: xxxx
+                product_weight: 10
+                product_width: 10
+                purpose: ""
+                qty: 1
+                requires_shipping: true
+            mode: 158171744064274954
+            not_accept_platform_update: true
+            not_accept_platform_update_item: true
+            note: Iusto aut aut ut velit sequi nemo.
+            nss_tracking_number: Quia est aut dolorem vel eaque.
+            nss_tracking_url: Nam accusamus est.
+            offline: true
+            order_number: "123"
+            platform: shopify
+            platform_info:
+              cancelled_at: "2020-01-01 00:00:00"
+              closed_at: "2020-01-01 00:00:00"
+              created_at: Quia sed ut itaque aut.
+              fulfillment_status: fulfillment
+              not_accept_update: true
+              order_id: 12344xxx
+              order_link: Perferendis voluptas fugit blanditiis harum.
+              order_no: platform order no
+              paid_status: Paid
+              platform_status: pending
+              tags:
+                - Quo eligendi libero vero consectetur beatae neque.
+                - Dolores est animi ipsa recusandae cumque aut.
+                - Quia error quas eum ea quisquam.
+            receiver_info:
+              address1: address1
+              address2: address2
+              certificate_code: "3455233"
+              certificate_period: "2028-01-01"
+              certificate_type: ID
+              city_name: SZ
+              company: China
+              country_code: US
+              country_name: US
+              email: 123@test.com
+              first_name: He
+              last_name: John
+              name: He
+              phone_number: 150xxxxxxxx
+              state_code: S
+              state_name: U
+              zip_code: "10016"
+            remark: Aut eos natus libero cupiditate.
+            request_shipping_at: Sequi aut dolorem veniam.
+            ship_date: Id eaque.
+            status: 1
+            status_name: new
+            store_id: 1
+            store_name: ST
+            tax_info:
+              customer_tariff_country_code: xxx
+              customer_tariff_id: 1
+              customer_tariff_number: xxxx
+              customer_tariff_number_type: ioss
+            warehouse_id: 1
+            warehouse_name: SZ
+          - cancel_status: 1
+            channel_id: 1
+            channel_name: SF
+            created_at: Qui dolores modi corporis qui.
+            customer_code: Possimus quos.
+            customer_order_id: xxx1234
+            fee_info:
+              actual_weight: 1000
+              charge_weight: 1000
+              currency: USD
+              fuel_fee: 5
+              fulfillment_fee: 3
+              handling_fee: 5
+              max_normal_days: 1607265350
+              min_normal_days: 1149943555
+              misc_fee: 5
+              package_fee: 5
+              processing_fee: 5
+              registration_fee: 5
+              total_price: 1
+              vat: 5
+              volume_factor: 149724400
+              volume_weight: 1000
+            hold_reason:
+              - code: 2035502774
+                en_reason: Accusamus ut doloremque praesentium ea nesciunt.
+                product_id: 4830887142123847081
+                reason: Aut autem totam.
+                type: At delectus deleniti delectus.
+              - code: 2035502774
+                en_reason: Accusamus ut doloremque praesentium ea nesciunt.
+                product_id: 4830887142123847081
+                reason: Aut autem totam.
+                type: At delectus deleniti delectus.
+              - code: 2035502774
+                en_reason: Accusamus ut doloremque praesentium ea nesciunt.
+                product_id: 4830887142123847081
+                reason: Aut autem totam.
+                type: At delectus deleniti delectus.
+            hold_status: false
+            inbound_order_number: Optio rerum amet est consequatur illum.
+            items:
+              - declared_cn_name: NSS
+                declared_en_name: NSS
+                declared_value_in_eur: 10.07
+                declared_value_in_usd: 10.07
+                ext_order_item_id: Quo rerum.
+                ext_product_id: Aut consequatur.
+                hs_code: xxx
+                id: 123
+                images:
+                  - Voluptates ipsa accusamus sed eum qui autem.
+                  - Rerum quod commodi sapiente aut nam recusandae.
+                  - Esse consequatur quia autem voluptatem laboriosam iste.
+                  - Quo praesentium ipsam quidem qui voluptatem.
+                listing_qty: 1
+                material: ""
+                platform_product_id: 4688370480807507131
+                product_attributes:
+                  - battery
+                  - cosmetic
+                  - liquid
+                  - magnetic
+                product_barcode: xxx
+                product_height: 10
+                product_id: 123
+                product_length: 10
+                product_name: NSS mate40
+                product_price: 10.3
+                product_sku: xxxx
+                product_weight: 10
+                product_width: 10
+                purpose: ""
+                qty: 1
+                requires_shipping: true
+              - declared_cn_name: NSS
+                declared_en_name: NSS
+                declared_value_in_eur: 10.07
+                declared_value_in_usd: 10.07
+                ext_order_item_id: Quo rerum.
+                ext_product_id: Aut consequatur.
+                hs_code: xxx
+                id: 123
+                images:
+                  - Voluptates ipsa accusamus sed eum qui autem.
+                  - Rerum quod commodi sapiente aut nam recusandae.
+                  - Esse consequatur quia autem voluptatem laboriosam iste.
+                  - Quo praesentium ipsam quidem qui voluptatem.
+                listing_qty: 1
+                material: ""
+                platform_product_id: 4688370480807507131
+                product_attributes:
+                  - battery
+                  - cosmetic
+                  - liquid
+                  - magnetic
+                product_barcode: xxx
+                product_height: 10
+                product_id: 123
+                product_length: 10
+                product_name: NSS mate40
+                product_price: 10.3
+                product_sku: xxxx
+                product_weight: 10
+                product_width: 10
+                purpose: ""
+                qty: 1
+                requires_shipping: true
+              - declared_cn_name: NSS
+                declared_en_name: NSS
+                declared_value_in_eur: 10.07
+                declared_value_in_usd: 10.07
+                ext_order_item_id: Quo rerum.
+                ext_product_id: Aut consequatur.
+                hs_code: xxx
+                id: 123
+                images:
+                  - Voluptates ipsa accusamus sed eum qui autem.
+                  - Rerum quod commodi sapiente aut nam recusandae.
+                  - Esse consequatur quia autem voluptatem laboriosam iste.
+                  - Quo praesentium ipsam quidem qui voluptatem.
+                listing_qty: 1
+                material: ""
+                platform_product_id: 4688370480807507131
+                product_attributes:
+                  - battery
+                  - cosmetic
+                  - liquid
+                  - magnetic
+                product_barcode: xxx
+                product_height: 10
+                product_id: 123
+                product_length: 10
+                product_name: NSS mate40
+                product_price: 10.3
+                product_sku: xxxx
+                product_weight: 10
+                product_width: 10
+                purpose: ""
+                qty: 1
+                requires_shipping: true
+              - declared_cn_name: NSS
+                declared_en_name: NSS
+                declared_value_in_eur: 10.07
+                declared_value_in_usd: 10.07
+                ext_order_item_id: Quo rerum.
+                ext_product_id: Aut consequatur.
+                hs_code: xxx
+                id: 123
+                images:
+                  - Voluptates ipsa accusamus sed eum qui autem.
+                  - Rerum quod commodi sapiente aut nam recusandae.
+                  - Esse consequatur quia autem voluptatem laboriosam iste.
+                  - Quo praesentium ipsam quidem qui voluptatem.
+                listing_qty: 1
+                material: ""
+                platform_product_id: 4688370480807507131
+                product_attributes:
+                  - battery
+                  - cosmetic
+                  - liquid
+                  - magnetic
+                product_barcode: xxx
+                product_height: 10
+                product_id: 123
+                product_length: 10
+                product_name: NSS mate40
+                product_price: 10.3
+                product_sku: xxxx
+                product_weight: 10
+                product_width: 10
+                purpose: ""
+                qty: 1
+                requires_shipping: true
+            mode: 158171744064274954
+            not_accept_platform_update: true
+            not_accept_platform_update_item: true
+            note: Iusto aut aut ut velit sequi nemo.
+            nss_tracking_number: Quia est aut dolorem vel eaque.
+            nss_tracking_url: Nam accusamus est.
+            offline: true
+            order_number: "123"
+            platform: shopify
+            platform_info:
+              cancelled_at: "2020-01-01 00:00:00"
+              closed_at: "2020-01-01 00:00:00"
+              created_at: Quia sed ut itaque aut.
+              fulfillment_status: fulfillment
+              not_accept_update: true
+              order_id: 12344xxx
+              order_link: Perferendis voluptas fugit blanditiis harum.
+              order_no: platform order no
+              paid_status: Paid
+              platform_status: pending
+              tags:
+                - Quo eligendi libero vero consectetur beatae neque.
+                - Dolores est animi ipsa recusandae cumque aut.
+                - Quia error quas eum ea quisquam.
+            receiver_info:
+              address1: address1
+              address2: address2
+              certificate_code: "3455233"
+              certificate_period: "2028-01-01"
+              certificate_type: ID
+              city_name: SZ
+              company: China
+              country_code: US
+              country_name: US
+              email: 123@test.com
+              first_name: He
+              last_name: John
+              name: He
+              phone_number: 150xxxxxxxx
+              state_code: S
+              state_name: U
+              zip_code: "10016"
+            remark: Aut eos natus libero cupiditate.
+            request_shipping_at: Sequi aut dolorem veniam.
+            ship_date: Id eaque.
+            status: 1
+            status_name: new
+            store_id: 1
+            store_name: ST
+            tax_info:
+              customer_tariff_country_code: xxx
+              customer_tariff_id: 1
+              customer_tariff_number: xxxx
+              customer_tariff_number_type: ioss
+            warehouse_id: 1
+            warehouse_name: SZ
+          - cancel_status: 1
+            channel_id: 1
+            channel_name: SF
+            created_at: Qui dolores modi corporis qui.
+            customer_code: Possimus quos.
+            customer_order_id: xxx1234
+            fee_info:
+              actual_weight: 1000
+              charge_weight: 1000
+              currency: USD
+              fuel_fee: 5
+              fulfillment_fee: 3
+              handling_fee: 5
+              max_normal_days: 1607265350
+              min_normal_days: 1149943555
+              misc_fee: 5
+              package_fee: 5
+              processing_fee: 5
+              registration_fee: 5
+              total_price: 1
+              vat: 5
+              volume_factor: 149724400
+              volume_weight: 1000
+            hold_reason:
+              - code: 2035502774
+                en_reason: Accusamus ut doloremque praesentium ea nesciunt.
+                product_id: 4830887142123847081
+                reason: Aut autem totam.
+                type: At delectus deleniti delectus.
+              - code: 2035502774
+                en_reason: Accusamus ut doloremque praesentium ea nesciunt.
+                product_id: 4830887142123847081
+                reason: Aut autem totam.
+                type: At delectus deleniti delectus.
+              - code: 2035502774
+                en_reason: Accusamus ut doloremque praesentium ea nesciunt.
+                product_id: 4830887142123847081
+                reason: Aut autem totam.
+                type: At delectus deleniti delectus.
+            hold_status: false
+            inbound_order_number: Optio rerum amet est consequatur illum.
+            items:
+              - declared_cn_name: NSS
+                declared_en_name: NSS
+                declared_value_in_eur: 10.07
+                declared_value_in_usd: 10.07
+                ext_order_item_id: Quo rerum.
+                ext_product_id: Aut consequatur.
+                hs_code: xxx
+                id: 123
+                images:
+                  - Voluptates ipsa accusamus sed eum qui autem.
+                  - Rerum quod commodi sapiente aut nam recusandae.
+                  - Esse consequatur quia autem voluptatem laboriosam iste.
+                  - Quo praesentium ipsam quidem qui voluptatem.
+                listing_qty: 1
+                material: ""
+                platform_product_id: 4688370480807507131
+                product_attributes:
+                  - battery
+                  - cosmetic
+                  - liquid
+                  - magnetic
+                product_barcode: xxx
+                product_height: 10
+                product_id: 123
+                product_length: 10
+                product_name: NSS mate40
+                product_price: 10.3
+                product_sku: xxxx
+                product_weight: 10
+                product_width: 10
+                purpose: ""
+                qty: 1
+                requires_shipping: true
+              - declared_cn_name: NSS
+                declared_en_name: NSS
+                declared_value_in_eur: 10.07
+                declared_value_in_usd: 10.07
+                ext_order_item_id: Quo rerum.
+                ext_product_id: Aut consequatur.
+                hs_code: xxx
+                id: 123
+                images:
+                  - Voluptates ipsa accusamus sed eum qui autem.
+                  - Rerum quod commodi sapiente aut nam recusandae.
+                  - Esse consequatur quia autem voluptatem laboriosam iste.
+                  - Quo praesentium ipsam quidem qui voluptatem.
+                listing_qty: 1
+                material: ""
+                platform_product_id: 4688370480807507131
+                product_attributes:
+                  - battery
+                  - cosmetic
+                  - liquid
+                  - magnetic
+                product_barcode: xxx
+                product_height: 10
+                product_id: 123
+                product_length: 10
+                product_name: NSS mate40
+                product_price: 10.3
+                product_sku: xxxx
+                product_weight: 10
+                product_width: 10
+                purpose: ""
+                qty: 1
+                requires_shipping: true
+              - declared_cn_name: NSS
+                declared_en_name: NSS
+                declared_value_in_eur: 10.07
+                declared_value_in_usd: 10.07
+                ext_order_item_id: Quo rerum.
+                ext_product_id: Aut consequatur.
+                hs_code: xxx
+                id: 123
+                images:
+                  - Voluptates ipsa accusamus sed eum qui autem.
+                  - Rerum quod commodi sapiente aut nam recusandae.
+                  - Esse consequatur quia autem voluptatem laboriosam iste.
+                  - Quo praesentium ipsam quidem qui voluptatem.
+                listing_qty: 1
+                material: ""
+                platform_product_id: 4688370480807507131
+                product_attributes:
+                  - battery
+                  - cosmetic
+                  - liquid
+                  - magnetic
+                product_barcode: xxx
+                product_height: 10
+                product_id: 123
+                product_length: 10
+                product_name: NSS mate40
+                product_price: 10.3
+                product_sku: xxxx
+                product_weight: 10
+                product_width: 10
+                purpose: ""
+                qty: 1
+                requires_shipping: true
+              - declared_cn_name: NSS
+                declared_en_name: NSS
+                declared_value_in_eur: 10.07
+                declared_value_in_usd: 10.07
+                ext_order_item_id: Quo rerum.
+                ext_product_id: Aut consequatur.
+                hs_code: xxx
+                id: 123
+                images:
+                  - Voluptates ipsa accusamus sed eum qui autem.
+                  - Rerum quod commodi sapiente aut nam recusandae.
+                  - Esse consequatur quia autem voluptatem laboriosam iste.
+                  - Quo praesentium ipsam quidem qui voluptatem.
+                listing_qty: 1
+                material: ""
+                platform_product_id: 4688370480807507131
+                product_attributes:
+                  - battery
+                  - cosmetic
+                  - liquid
+                  - magnetic
+                product_barcode: xxx
+                product_height: 10
+                product_id: 123
+                product_length: 10
+                product_name: NSS mate40
+                product_price: 10.3
+                product_sku: xxxx
+                product_weight: 10
+                product_width: 10
+                purpose: ""
+                qty: 1
+                requires_shipping: true
+            mode: 158171744064274954
+            not_accept_platform_update: true
+            not_accept_platform_update_item: true
+            note: Iusto aut aut ut velit sequi nemo.
+            nss_tracking_number: Quia est aut dolorem vel eaque.
+            nss_tracking_url: Nam accusamus est.
+            offline: true
+            order_number: "123"
+            platform: shopify
+            platform_info:
+              cancelled_at: "2020-01-01 00:00:00"
+              closed_at: "2020-01-01 00:00:00"
+              created_at: Quia sed ut itaque aut.
+              fulfillment_status: fulfillment
+              not_accept_update: true
+              order_id: 12344xxx
+              order_link: Perferendis voluptas fugit blanditiis harum.
+              order_no: platform order no
+              paid_status: Paid
+              platform_status: pending
+              tags:
+                - Quo eligendi libero vero consectetur beatae neque.
+                - Dolores est animi ipsa recusandae cumque aut.
+                - Quia error quas eum ea quisquam.
+            receiver_info:
+              address1: address1
+              address2: address2
+              certificate_code: "3455233"
+              certificate_period: "2028-01-01"
+              certificate_type: ID
+              city_name: SZ
+              company: China
+              country_code: US
+              country_name: US
+              email: 123@test.com
+              first_name: He
+              last_name: John
+              name: He
+              phone_number: 150xxxxxxxx
+              state_code: S
+              state_name: U
+              zip_code: "10016"
+            remark: Aut eos natus libero cupiditate.
+            request_shipping_at: Sequi aut dolorem veniam.
+            ship_date: Id eaque.
+            status: 1
+            status_name: new
+            store_id: 1
+            store_name: ST
+            tax_info:
+              customer_tariff_country_code: xxx
+              customer_tariff_id: 1
+              customer_tariff_number: xxxx
+              customer_tariff_number_type: ioss
+            warehouse_id: 1
+            warehouse_name: SZ
+        meta:
+          current: 1
+          page_size: 1
+          total: 1
+      required:
+        - list
+        - meta
+    MetaData:
+      type: object
+      properties:
+        current:
+          type: integer
+          description: current
+          example: 1
+          minimum: 1
+        page_size:
+          type: integer
+          description: page_size
+          example: 1
+          minimum: 1
+        total:
+          type: integer
+          description: total
+          example: 1
+          format: int64
+      description: MetaData describes the MetaData
+      example:
+        current: 1
+        page_size: 1
+        total: 1
+      required:
+        - current
+        - page_size
+        - total
     SignupData:
       type: object
       properties:
