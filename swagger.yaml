@@ -1388,8 +1388,7 @@ paths:
               $ref: '#/components/schemas/BatchesCreateProductRequestBody'
             example:
               products:
-                - Authorization: Consequatur vel omnis rerum ut dolorum.
-                  attributes:
+                - attributes:
                     - liquid
                     - battery
                     - cosmetic
@@ -1402,11 +1401,8 @@ paths:
                   declared_value_in_eur: 50
                   declared_value_in_usd: 50
                   enabled_nss_barcode: false
-                  error_message: Error ratione commodi explicabo temporibus accusantium
-                    cupiditate.
                   height: 2
                   hs_code: xxx
-                  id: 1
                   images:
                     - url
                   length: 1
@@ -1415,11 +1411,9 @@ paths:
                   purpose: Voluptatibus et quae provident sit doloribus consequatur.
                   qty: 1
                   sku: xxx
-                  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ
                   weight: 10
                   width: 1
-                - Authorization: Consequatur vel omnis rerum ut dolorum.
-                  attributes:
+                - attributes:
                     - liquid
                     - battery
                     - cosmetic
@@ -1432,11 +1426,8 @@ paths:
                   declared_value_in_eur: 50
                   declared_value_in_usd: 50
                   enabled_nss_barcode: false
-                  error_message: Error ratione commodi explicabo temporibus accusantium
-                    cupiditate.
                   height: 2
                   hs_code: xxx
-                  id: 1
                   images:
                     - url
                   length: 1
@@ -1445,11 +1436,9 @@ paths:
                   purpose: Voluptatibus et quae provident sit doloribus consequatur.
                   qty: 1
                   sku: xxx
-                  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ
                   weight: 10
                   width: 1
-                - Authorization: Consequatur vel omnis rerum ut dolorum.
-                  attributes:
+                - attributes:
                     - liquid
                     - battery
                     - cosmetic
@@ -1462,11 +1451,8 @@ paths:
                   declared_value_in_eur: 50
                   declared_value_in_usd: 50
                   enabled_nss_barcode: false
-                  error_message: Error ratione commodi explicabo temporibus accusantium
-                    cupiditate.
                   height: 2
                   hs_code: xxx
-                  id: 1
                   images:
                     - url
                   length: 1
@@ -1475,7 +1461,6 @@ paths:
                   purpose: Voluptatibus et quae provident sit doloribus consequatur.
                   qty: 1
                   sku: xxx
-                  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ
                   weight: 10
                   width: 1
       responses:
