@@ -136,7 +136,7 @@ paths:
             - "2"
         - name: status_label
           in: query
-          description: Status Label
+          description: Status Label(options:all|ready|processing|shipped|cancelled|hold)
           allowEmptyValue: true
           schema:
             type: string
@@ -4106,7 +4106,7 @@ components:
           minItems: 1
         mode:
           type: integer
-          description: delivery mode(1 direct，2 warehouse, 3 platform)
+          description: delivery mode(2 warehouse)
           example: 2
           enum:
             - 1
