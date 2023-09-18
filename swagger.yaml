@@ -179,12 +179,6 @@ paths:
             items:
               type: string
             description: attributes
-            example:
-              - normal
-              - liquid
-              - electric
-              - cosmetic
-              - magnetic
         - name: inventory
           in: query
           description: inventory
@@ -843,6 +837,11 @@ components:
     OmsOrderItemCreateRequest:
       type: object
       properties:
+        product_id:
+          type: integer
+          description: product id
+          default: 0
+          format: int64
         declared_cn_name:
           type: string
           description: declared cn name
@@ -871,11 +870,6 @@ components:
           type: string
           description: sku
           default: ""
-        product_id:
-          type: integer
-          description: product id
-          default: 0
-          format: int64
         purpose:
           type: string
           description: Purpose
@@ -892,8 +886,6 @@ components:
         - name
         - qty
         - hs_code
-        - declared_cn_name
-        - declared_en_name
         - declared_value_in_usd
         - declared_value_in_eur
     OmsOrderResponse:
