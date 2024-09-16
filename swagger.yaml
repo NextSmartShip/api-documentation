@@ -1,1487 +1,2365 @@
-openapi: 3.0.3
+openapi: "3.1.1"
 info:
-  title: NextSmartShip openapi
-  description: NextSmartShip openapi for oms
-  version: "1.0"
-servers:
-  - url: https://omsdev.nextsmartship.com
-    description: Development Order Management Service
-    variables:
-      version:
-        default: v1
-  - url: https://api.nextsmartship.com
-    description: Production Order Management Service
-    variables:
-      version:
-        default: v1
+  title: NextSmartShip OpenAPI
+  version: 1.0.0
+tags:
+  - name: Authenticate
+  - name: ProductService
+  - name: OrderService
+  - name: InventoryService
+  - name: BillingService
+  - name: TrackService
 paths:
-  /oms/v1/outbound-orders:
+  /oauth/token:
     post:
+      description: Get Access Token
       tags:
-        - order
-      summary: create_oms_outbound_order order
-      operationId: order#create_oms_outbound_order
+        - Authenticate
+      parameters: []
       requestBody:
-        required: true
         content:
-          application/json:
+          application/x-www-form-urlencoded:
             schema:
-              $ref: "#/components/schemas/CreateOmsOutboundOrderRequestBody"
+              type: object
+              required:
+                - client_id
+                - client_secret
+                - grant_type
+              properties:
+                client_id:
+                  example: CLIENT_ID
+                  type: string
+                  required: true
+                client_secret:
+                  example: CLIENT_SECRET
+                  type: string
+                  required: true
+                grant_type:
+                  example: client_credentials
+                  type: string
+                  required: true
       responses:
         "200":
-          description: OK response.
+          description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/OmsOrderResponse"
+                type: object
+                properties:
+                  access_token:
+                    type: string
+                  expires_in:
+                    type: integer
+                  refresh_token:
+                    type: string
+                  token_type:
+                    type: string
+              examples:
+                "1":
+                  summary: SUCCESS EXAMPLE
+                  value:
+                    access_token: eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJ0ZW5hbnRfaWQiOiIxNjMiLCJzdWIiOiJOMTIz...
+                    expires_in: 86400
+                    refresh_token: NTRLOWVKMTATZGUYMC01NME3LTK2N2QTNTM0ODQ5MJL...
+                    token_type: Bearer
+          headers: {}
         "401":
-          description: Unauthorized response.
-          content:
-            application/vnd.goa.error:
-              schema:
-                $ref: "#/components/schemas/Error"
-      security:
-        - jwt_header_Authorization:
-            - api:read
-            - api:write
-  /oms/v1/outbound-orders/list:
-    get:
-      tags:
-        - order
-      summary: get_outbound_order_list order
-      operationId: order#get_outbound_order_list
-      parameters:
-        - name: order_number
-          in: query
-          description: Order No.
-          allowEmptyValue: true
-          schema:
-            type: array
-            items:
-              type: string
-            description: Order No.
-        - name: status_label
-          in: query
-          description: Status Label(options:all|ready|processing|shipped|cancelled|hold)
-          allowEmptyValue: true
-          schema:
-            type: string
-            description: Status Label
-        - name: page
-          in: query
-          description: Page
-          allowEmptyValue: true
-          schema:
-            type: string
-            description: Page
-        - name: page_size
-          in: query
-          description: Page Size
-          allowEmptyValue: true
-          schema:
-            type: string
-            description: Page Size
-      responses:
-        "200":
-          description: OK response.
+          description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/GetOrderListResult"
-        "401":
-          description: Unauthorized response.
-          content:
-            application/vnd.goa.error:
-              schema:
-                $ref: "#/components/schemas/Error"
-      security:
-        - jwt_header_Authorization:
-            - api:read
-            - api:write
-  /oms/v1/outbound-orders/{order_number}:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  error_description:
+                    type: string
+              examples:
+                "1":
+                  summary: ERROR EXAMPLE
+                  value:
+                    error: invalid_client
+                    error_description: Bad client credentials
+          headers: {}
+  /oms/v3/products:
     get:
+      description: List Products
+      operationId: ProductService_ListProducts
       tags:
-        - order
-      summary: get_outbound_order order
-      operationId: order#get_outbound_order#1
+        - ProductService
       parameters:
-        - name: order_number
-          in: path
-          description: outbound order number
-          required: true
+        - name: ids
+          in: query
+          description: support single id fuzzy query, multiple ids separated by commas exact query
+          required: false
           schema:
             type: string
-            description: outbound order number
-            minLength: 1
-      responses:
-        "200":
-          description: OK response.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/QueryOrderRsp"
-        "401":
-          description: Unauthorized response.
-          content:
-            application/vnd.goa.error:
-              schema:
-                $ref: "#/components/schemas/Error"
-      security:
-        - jwt_header_Authorization:
-            - api:read
-            - api:write
-  /oms/v1/products:
-    get:
-      tags:
-        - product
-      summary: products_query product
-      operationId: product#products_query
-      parameters:
+        - name: skus
+          in: query
+          description: support single sku fuzzy query, multiple skus separated by commas exact query
+          required: false
+          schema:
+            type: string
         - name: name
           in: query
-          description: name
-          allowEmptyValue: true
+          description: Name
+          required: false
           schema:
             type: string
-            description: name
-            maxLength: 50
-        - name: sku
+        - name: barcodes
           in: query
-          description: sku
-          allowEmptyValue: true
+          description: barcode, supports single barcode fuzzy query, multiple barcodes separated by commas for exact query
+          required: false
           schema:
             type: string
-            description: sku
-        - name: barcode
+        - name: logistics_attribute
           in: query
-          description: barcode
-          allowEmptyValue: true
+          description: Logistics attribute
+          required: false
           schema:
             type: string
-            description: barcode
         - name: status
           in: query
-          description: status
-          allowEmptyValue: true
+          description: Status
+          required: false
           schema:
-            type: integer
-            description: status
-            enum:
-              - 0
-              - 1
-              - 10
-        - name: attributes
-          in: query
-          description: attributes
-          allowEmptyValue: true
-          schema:
-            type: array
-            items:
-              type: string
-            description: attributes
-        - name: inventory
-          in: query
-          description: inventory
-          allowEmptyValue: true
-          schema:
-            type: boolean
-            description: inventory
-            enum:
-              - false
-              - true
+            type: string
         - name: current
           in: query
-          description: current
-          allowEmptyValue: true
+          description: Current page
+          required: false
           schema:
             type: integer
-            description: current
-            minimum: 1
+            format: int32
         - name: page_size
           in: query
-          description: page_size
-          allowEmptyValue: true
+          description: Number of items per page
+          required: false
           schema:
             type: integer
-            description: page_size
-            minimum: 1
+            format: int32
       responses:
         "200":
-          description: OK response.
+          description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ProductsQueryRsp"
-        "401":
-          description: Unauthorized response.
-          content:
-            application/vnd.goa.error:
-              schema:
-                $ref: "#/components/schemas/Error"
+                $ref: "#/components/schemas/oms.product.v3.ListProductsResponse"
+          headers: {}
       security:
-        - jwt_header_Authorization:
-            - api:read
-            - api:write
+        - BearerAuth: []
     post:
+      description: Create Product
       tags:
-        - product
-      summary: batches_create_product product
-      operationId: product#batches_create_product
+        - ProductService
+      parameters: []
       requestBody:
-        required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/BatchesCreateProductRequestBody"
+              $ref: "#/components/schemas/oms.product.v3.CreateProductRequest"
       responses:
         "200":
-          description: OK response.
+          description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/MultiProductRsp"
-        "401":
-          description: Unauthorized response.
-          content:
-            application/vnd.goa.error:
-              schema:
-                $ref: "#/components/schemas/Error"
+                $ref: "#/components/schemas/oms.product.v3.CreateProductResponse"
       security:
-        - jwt_header_Authorization:
-            - api:read
-            - api:write
-  /oms/v1/products/{id}:
+        - BearerAuth: []
+  /oms/v3/products/{id}:
     get:
+      description: Get Product by ID
+      operationId: ProductService_GetProduct
       tags:
-        - product
-      summary: product_detail product
-      operationId: product#product_detail
+        - ProductService
       parameters:
         - name: id
           in: path
           description: id
           required: true
+          example: 0
           schema:
             type: integer
-            description: id
             format: int32
       responses:
         "200":
-          description: OK response.
+          description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ProductDetailRsp"
-        "401":
-          description: Unauthorized response.
-          content:
-            application/vnd.goa.error:
-              schema:
-                $ref: "#/components/schemas/Error"
+                $ref: "#/components/schemas/oms.product.v3.GetProductResponse"
+          headers: {}
       security:
-        - jwt_header_Authorization:
-            - api:read
-            - api:write
-  /oms/v2/login:
-    post:
+        - BearerAuth: []
+    put:
+      description: Update Product
+      operationId: ProductService_UpdateProduct
       tags:
-        - user
-      summary: user_login user
-      operationId: user#user_login
+        - ProductService
+      parameters:
+        - name: id
+          in: path
+          description: ID
+          required: true
+          example: 0
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/oms.product.v3.UpdateProductRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/oms.product.v3.UpdateProductResponse"
+          headers: {}
+      security:
+        - BearerAuth: []
+    delete:
+      description: Delete Product
+      operationId: ProductService_DeleteProduct
+      tags:
+        - ProductService
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          example: 0
+          schema:
+            type: integer
+            format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/oms.product.v3.DeleteProductResponse"
+          headers: {}
+      security:
+        - BearerAuth: []
+  /oms/v3/orders:
+    get:
+      description: Get Orders
+      operationId: OrderService_GetOrders
+      tags:
+        - OrderService
+      parameters:
+        - name: order_number
+          in: query
+          description: Order Number
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: platform_order_number
+          in: query
+          description: Customer order number
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: sku
+          in: query
+          description: sku
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: nss_tracking_number
+          in: query
+          description: nss tracking number
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: status_label
+          in: query
+          description: Order status
+          required: false
+          schema:
+            type: string
+        - name: warehouse_id
+          in: query
+          description: Warehouse ID
+          required: false
+          schema:
+            type: array
+            items:
+              type: integer
+              format: int32
+        - name: country_code
+          in: query
+          description: Country code
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: created_at_start
+          in: query
+          description: Created at start
+          required: false
+          schema:
+            type: string
+        - name: created_at_end
+          in: query
+          description: Created at end
+          required: false
+          schema:
+            type: string
+        - name: ship_date_start
+          in: query
+          description: Ship date begin
+          required: false
+          schema:
+            type: string
+        - name: ship_date_end
+          in: query
+          description: Ship date end
+          required: false
+          schema:
+            type: string
+        - name: order_type
+          in: query
+          description: Order type
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: current
+          in: query
+          description: Current page
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: page_size
+          in: query
+          description: Number of items per page
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: request_shipping_at_start
+          in: query
+          description: request shipping at start
+          required: false
+          schema:
+            type: string
+        - name: request_shipping_at_end
+          in: query
+          description: request shipping at end
+          required: false
+          schema:
+            type: string
+        - name: package_status
+          in: query
+          description: Package status
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/oms.order.v3.GetOrdersResponse"
+          headers: {}
+      security:
+        - BearerAuth: []
+    post:
+      description: Create Order
+      operationId: OrderService_CreateOrder
+      tags:
+        - OrderService
+      parameters: []
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UserLoginRequestBody"
-            example:
-              email: xxx@nextsmartship.com
-              password: xxx
+              $ref: "#/components/schemas/oms.order.v3.CreateOrderRequest"
       responses:
         "200":
-          description: OK response.
+          description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SignupRsp"
-        "401":
-          description: Unauthorized response.
+                $ref: "#/components/schemas/oms.order.v3.CreateOrderResponse"
+          headers: {}
+      security:
+        - BearerAuth: []
+  /oms/v3/orders/{order_number}:
+    get:
+      description: Get Order by Order Number
+      operationId: OrderService_GetOrderDetail
+      tags:
+        - OrderService
+      parameters:
+        - name: order_number
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
           content:
-            application/vnd.goa.error:
+            application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: "#/components/schemas/oms.order.v3.GetOrderDetailResponse"
+          headers: {}
+      security:
+        - BearerAuth: []
+    put:
+      description: Update Order
+      operationId: OrderService_UpdateOrder
+      tags:
+        - OrderService
+      parameters:
+        - name: order_number
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/oms.order.v3.UpdateOrderRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/oms.order.v3.UpdateOrderResponse"
+          headers: {}
+      security:
+        - BearerAuth: []
+  /oms/v3/batch-inventories:
+    get:
+      description: List Batch Inventories
+      operationId: InventoryService_GetBatchInventories
+      tags:
+        - InventoryService
+      parameters:
+        - name: barcode
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: sku
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: product_name
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: warehouse_id
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: shelve_at_start
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: shelve_at_end
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: inventory_age_min
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: inventory_age_max
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: current
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: page_size
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/oms.inventory.v3.GetBatchInventoryResponse"
+          headers: {}
+      security:
+        - BearerAuth: []
+  /oms/v3/stock-summaries:
+    get:
+      description: List Stock
+      operationId: InventoryService_GetStockSummary
+      tags:
+        - InventoryService
+      parameters:
+        - name: barcode
+          in: query
+          description: Product barcode
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: sku
+          in: query
+          description: Product sku
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: product_en_name
+          in: query
+          description: Product English name
+          required: false
+          schema:
+            type: string
+        - name: current
+          in: query
+          description: Current page
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: page_size
+          in: query
+          description: Number of items per page
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: warehouse_id
+          in: query
+          description: Warehouse ID
+          required: false
+          schema:
+            type: integer
+            format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/oms.inventory.v3.GetStockSummariesResponse"
+          headers: {}
+      security:
+        - BearerAuth: []
+  /oms/v3/transaction:
+    get:
+      description: List Transactions
+      operationId: BillingService_GetTransaction
+      tags:
+        - BillingService
+      parameters:
+        - name: ref_nos
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: transaction_at_since
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: transaction_at_until
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: current
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: page_size
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: transaction_type
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/oms.billing.v3.GetTransactionResponse"
+          headers: {}
+      security:
+        - BearerAuth: []
+  /oms/v3/transaction/statistics/asn:
+    get:
+      description: List Receiving Transaction Statistics
+      operationId: BillingService_GetAsnTransactionStatistics
+      tags:
+        - BillingService
+      parameters:
+        - name: asn_numbers
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: shelved_at_since
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: shelved_at_until
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: transaction_at_since
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: transaction_at_until
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: current
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: page_size
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/oms.billing.v3.GetAsnTransactionStatisticsResponse"
+          headers: {}
+      security:
+        - BearerAuth: []
+  /oms/v3/transaction/statistics/order:
+    get:
+      description: Query Order cost
+      operationId: BillingService_GetOrderTransactionStatistics
+      tags:
+        - BillingService
+      parameters:
+        - name: order_nos
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: platform_order_nos
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: request_shipping_at_since
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: request_shipping_at_until
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: checkout_at_since
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: checkout_at_until
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: current
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: page_size
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: with_fat
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: transaction_at_since
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: transaction_at_until
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date-time
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/oms.billing.v3.GetOrderTransactionStatisticsResponse"
+          headers: {}
+      security:
+        - BearerAuth: []
+  /oms/v3/transaction/statistics/storage-fee:
+    get:
+      description: List Storage Fee
+      operationId: BillingService_GetStorageFeeTransactionStatistics
+      tags:
+        - BillingService
+      parameters:
+        - name: storage_fee_no
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: warehouse_id
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: storage_fee_date_since
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: storage_fee_date_until
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: transaction_at_since
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: transaction_at_until
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: current
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: page_size
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/oms.billing.v3.GetStorageFeeTransactionStatisticsResponse"
+          headers: {}
+      security:
+        - BearerAuth: []
+  /oms/v3/tracks/query:
+    post:
+      description: Get NSS Track Information
+      operationId: TrackService_GetNSSTracks
+      tags:
+        - TrackService
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/tms.track.v1.GetNSSTracksRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/tms.track.v1.GetNSSTracksResponse"
+          headers: {}
+      security: []
 components:
   schemas:
-    ChannelOption:
+    oms.billing.v3.AsnTransactionStatistics:
       type: object
       properties:
-        actual_weight:
-          type: integer
-          description: Actual Weight
-          format: int64
-        channel_id:
-          type: integer
-          description: Channel ID
-          format: int64
-        channel_name:
+        asn_number:
           type: string
-          description: Channel Name
-        channel_type:
+        warehouse_id:
           type: integer
-          description: Channel Type
-          format: int64
-        channel_type_name:
+          format: int32
+        warehouse_name:
           type: string
-          description: Channel Type Name
-        charge_weight:
-          type: integer
-          description: Charge Weight
-          format: int64
-        fuel_fee:
+        remark:
+          type: string
+        shelved_at:
+          type: string
+          format: date-time
+        amount:
           type: number
-          description: Fuel Fee
           format: double
-        handling_fee:
-          type: number
-          description: Handling Fee
-          format: double
+        transaction_records:
+          type: array
+          items:
+            $ref: "#/components/schemas/oms.billing.v3.TransactionStatisticsDetail"
+        time_line_list:
+          type: array
+          items:
+            $ref: "#/components/schemas/oms.billing.v3.TransactionRecord"
+    oms.billing.v3.TransactionRecord:
+      type: object
+      properties:
         id:
           type: integer
-          description: Channel Cost Id
-          format: int64
-        max_normal_days:
+          format: int32
+        fee_item_name:
+          type: string
+        fee_item_type:
+          type: string
+        amount:
+          type: number
+          format: double
+        fee_adjustment_id:
           type: integer
-          description: Max Normal Days
-          format: int64
-        min_normal_days:
-          type: integer
-          description: Min Normal Days
-          format: int64
-        misc_fee:
-          type: number
-          description: Misc Fee
-          format: double
-        processing_fee:
-          type: number
-          description: Processing Fee
-          format: double
-        registration_fee:
-          type: number
-          description: Registration Fee
-          format: double
-        shipping_cost:
-          type: number
-          description: Shipping Cost
-          format: double
-        total_fee:
-          type: number
-          description: Total Fee
-          format: double
-        vat:
-          type: number
-          description: Vat
-          format: double
-        volume_factor:
-          type: integer
-          description: Volume Factor
-          format: int64
-        volume_weight:
-          type: integer
-          description: Volume Weight
-          format: int64
-      description: Channel Option
-    OrderFeeDetail:
+          format: int32
+        fee_adjustment_no:
+          type: string
+        transaction_at:
+          type: string
+          format: date-time
+        remark:
+          type: string
+    oms.billing.v3.TransactionStatisticsDetail:
       type: object
       properties:
-        actual_weight:
+        fee_item_type_name:
+          type: string
+        fee_item_name:
+          type: string
+        amount:
+          type: number
+          format: double
+        transaction_at:
+          type: string
+          format: date-time
+      description: Transaction Details
+    oms.billing.v3.GetAsnTransactionStatisticsResponse:
+      type: object
+      properties:
+        code:
           type: integer
-          description: Actual Weight(unit g)
-          format: int64
-        charge_weight:
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/oms.billing.v3.GetAsnTransactionStatisticsResponse_Data"
+    oms.billing.v3.GetAsnTransactionStatisticsResponse_Data:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties: {}
+        list:
+          type: array
+          items:
+            $ref: "#/components/schemas/oms.billing.v3.AsnTransactionStatistics"
+    oms.billing.v3.Pagination:
+      type: object
+      properties:
+        total:
           type: integer
-          description: Charge Weight (unit g)
-          format: int64
+          format: int32
+        current:
+          type: integer
+          format: int32
+        page_size:
+          type: integer
+          format: int32
+    oms.billing.v3.GetOrderTransactionStatisticsResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/oms.billing.v3.GetOrderTransactionStatisticsResponse_Data"
+    oms.billing.v3.GetOrderTransactionStatisticsResponse_Data:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties: {}
+        list:
+          type: array
+          items:
+            $ref: "#/components/schemas/oms.billing.v3.OrderTransactionStatistics"
+    oms.billing.v3.OrderTransactionStatistics:
+      type: object
+      properties:
+        order_id:
+          type: integer
+          format: int32
+        order_no:
+          type: string
+        platform_name:
+          type: string
+        platform_order_no:
+          type: string
+        store_name:
+          type: string
+        sorting_weight:
+          type: number
+          format: double
+        amount:
+          type: number
+          format: double
+        request_shipping_at:
+          type: string
+          format: date-time
+        checkout_at:
+          type: string
+          format: date-time
+        transaction_records:
+          type: array
+          items:
+            $ref: "#/components/schemas/oms.billing.v3.TransactionStatisticsDetail"
+        time_line_list:
+          type: array
+          items:
+            $ref: "#/components/schemas/oms.billing.v3.TransactionRecord"
+        with_fat:
+          type: boolean
+    oms.billing.v3.GetOtherTransactionStatisticsResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/oms.billing.v3.GetOtherTransactionStatisticsResponse_Data"
+    oms.billing.v3.GetOtherTransactionStatisticsResponse_Data:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties: {}
+        list:
+          type: array
+          items:
+            $ref: "#/components/schemas/oms.billing.v3.OtherTransactionStatistics"
+    oms.billing.v3.OtherTransactionStatistics:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        fee_item_type_name:
+          type: string
+        fee_item_name:
+          type: string
+        amount:
+          type: number
+          format: double
+        transaction_at:
+          type: string
+          format: date-time
+        remark:
+          type: string
+    oms.billing.v3.GetStorageFeeTransactionStatisticsResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/oms.billing.v3.GetStorageFeeTransactionStatisticsResponse_Data"
+    oms.billing.v3.GetStorageFeeTransactionStatisticsResponse_Data:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties: {}
+        list:
+          type: array
+          items:
+            $ref: "#/components/schemas/oms.billing.v3.StorageFeeTransactionStatistics"
+    oms.billing.v3.StorageFeeTransactionStatistics:
+      type: object
+      properties:
+        storage_fee_no:
+          type: string
+        warehouse_id:
+          type: integer
+          format: int32
+        warehouse_name:
+          type: string
+        amount:
+          type: number
+          format: double
+        storage_fee_date:
+          type: string
+        transaction_at:
+          type: string
+          format: date-time
+    oms.billing.v3.GetTransactionResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/oms.billing.v3.GetTransactionResponse_Data"
+    oms.billing.v3.GetTransactionResponse_Data:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties: {}
+        list:
+          type: array
+          items:
+            $ref: "#/components/schemas/oms.billing.v3.Transaction"
+    oms.billing.v3.Transaction:
+      type: object
+      properties:
+        ref_no:
+          type: string
+        ref_type:
+          enum:
+            - TRANSACTION_REF_TYPE_UNSPECIFIED
+            - TRANSACTION_REF_TYPE_ORDER
+            - TRANSACTION_REF_TYPE_STORAGE_FEE
+            - TRANSACTION_REF_TYPE_RECHARGE_TICKET
+            - TRANSACTION_REF_TYPE_INBOUND_ORDER
+          type: string
+          format: enum
+        amount:
+          type: number
+          format: double
+        balance:
+          type: number
+          format: double
+        transaction_at:
+          type: string
+          format: date-time
+        remark:
+          type: string
+        references:
+          type: array
+          items:
+            $ref: "#/components/schemas/oms.billing.v3.TransactionRecord"
+      description: Transaction Details
+    oms.inventory.v3.GetBatchInventoryResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/oms.inventory.v3.GetBatchInventoryResponse_Payload"
+    oms.inventory.v3.GetBatchInventoryResponse_Payload:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            $ref: "#/components/schemas/oms.inventory.v3.GetBatchInventoryResponse_BatchInventory"
+        meta:
+          $ref: "#/components/schemas/oms.inventory.v3.Pagination"
+    oms.inventory.v3.Pagination:
+      type: object
+      properties:
+        current:
+          type: integer
+          format: int32
+        page_size:
+          type: integer
+          format: int32
+        total:
+          type: integer
+          format: int32
+    oms.inventory.v3.GetBatchInventoryResponse_BatchInventory:
+      type: object
+      properties:
+        sku:
+          type: string
+        product_name:
+          type: string
+        barcode:
+          type: string
+        warehouse_id:
+          type: integer
+          format: int32
+        shelve_at:
+          type: string
+          format: date-time
+        available_qty:
+          type: integer
+          format: int32
+        inventory_age:
+          type: integer
+          format: int32
+        ref_type:
+          enum:
+            - BATCH_INVENTORY_REF_TYPE_UNKNOWN
+            - BATCH_INVENTORY_REF_TYPE_INBOUND
+            - BATCH_INVENTORY_REF_TYPE_SHELVE
+            - BATCH_INVENTORY_REF_TYPE_STOCKTAKING
+            - BATCH_INVENTORY_REF_TYPE_ORDER
+            - BATCH_INVENTORY_REF_TYPE_UNSHELVE
+          type: string
+          format: enum
+        ref_no:
+          type: string
+        cargo_type_code:
+          type: string
+        volume:
+          type: number
+          format: float
+    oms.inventory.v3.GetStockSummariesResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/oms.inventory.v3.StockSummaryListPayload"
+    oms.inventory.v3.StockSummaryListPayload:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            $ref: "#/components/schemas/oms.inventory.v3.StockSummary"
+        meta:
+          $ref: "#/components/schemas/type.v1.Pagination"
+    type.v1.Pagination:
+      type: object
+      properties:
+        current:
+          type: integer
+          format: int32
+        page_size:
+          type: integer
+          format: int32
+        total:
+          type: integer
+          format: int32
+    oms.inventory.v3.StockSummary:
+      type: object
+      properties:
+        barcode:
+          type: string
+          description: Product barcode
+        sku:
+          type: string
+          description: Product sku
+        product_en_name:
+          type: string
+          description: Product English name
+        tenant_code:
+          type: string
+          description: Tenant code
+        warehouse_id:
+          type: integer
+          description: Warehouse ID
+          format: int32
+        tenant_qty:
+          type: integer
+          description: Tenant quantity
+          format: int32
+        available_qty:
+          type: integer
+          description: Available quantity
+          format: int32
+        pre_available_qty:
+          type: integer
+          description: Pre-available quantity
+          format: int32
+        pre_available_items:
+          type: array
+          items:
+            $ref: "#/components/schemas/oms.inventory.v3.PreAvailableItem"
+          description: Pre-available items
+        on_hold_qty:
+          type: integer
+          description: On-hold quantity
+          format: int32
+        on_hold_items:
+          type: array
+          items:
+            $ref: "#/components/schemas/oms.inventory.v3.OnHoldItem"
+          description: On-hold items
+        warehouse_name:
+          type: string
+          description: Warehouse name
+    oms.inventory.v3.OnHoldItem:
+      type: object
+      properties:
+        action_type:
+          type: string
+        ref_no:
+          type: string
+        qty:
+          type: integer
+          format: int32
+        remark:
+          type: string
+    oms.inventory.v3.PreAvailableItem:
+      type: object
+      properties:
+        ref_no:
+          type: string
+        qty:
+          type: integer
+          format: int32
+    oms.order.v3.Address:
+      type: object
+      required:
+        - first_name
+        - last_name
+        - address1
+        - city
+        - zip_code
+        - country_code
+        - phone
+      properties:
+        first_name:
+          type: string
+        last_name:
+          type: string
+        company:
+          type: string
+        address1:
+          type: string
+        address2:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        state_code:
+          type: string
+        zip_code:
+          type: string
+        country_code:
+          type: string
+        phone:
+          type: string
+        email:
+          type: string
+        country:
+          type: string
+    oms.order.v3.UpdateOrderRequest:
+      type: object
+      properties:
+        customer_order_number:
+          type: string
+          description: The customer order number
+        order_type:
+          type: integer
+          description: The order type, 1 => Normal Order, 2 => Offline Order,  default is 1.
+          format: int32
+        warehouse_id:
+          type: integer
+          description: Ship from warehouse code, default is CN Warehouse
+          format: int32
+        receiver_address:
+          $ref: "#/components/schemas/oms.order.v3.Address"
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/oms.order.v3.CreateOrUpdateOrderItem"
+        order_placed_at:
+          type: string
+          description: The order placed time
+          format: date-time
+        tax_info:
+          allOf:
+            - $ref: "#/components/schemas/oms.order.v3.TaxInfo"
+          description: tax number, such as VAT/IOSS number
+        order_amount:
+          type: number
+          description: The order total amount
+          format: double
         currency:
           type: string
-          description: Currency
+          description: The order currency
+        extra_info:
+          $ref: "#/components/schemas/oms.order.v3.ExtraInfo"
+        note:
+          type: string
+          description: The order note
+    oms.order.v3.ExtraInfo:
+      type: object
+      properties:
+        transaction_proofs:
+          type: array
+          items:
+            $ref: "#/components/schemas/oms.order.v3.TransactionProof"
+          description: ransaction screenshots
+    oms.order.v3.TransactionProof:
+      type: object
+      properties:
+        file_link:
+          type: string
+          description: Transaction Screenshot Link
+      description: Transaction Proof
+    oms.order.v3.TaxInfo:
+      type: object
+      properties:
+        type:
+          type: string
+        issuer_country_code:
+          type: string
+        number:
+          type: string
+    oms.order.v3.CreateOrUpdateOrderItem:
+      type: object
+      required:
+        - sku
+        - quantity
+      properties:
+        sku:
+          type: string
+        product_name:
+          type: string
+        image_url:
+          type: string
+        quantity:
+          type: integer
+          format: int32
+        declared_value_in_usd:
+          type: number
+          format: double
+        declared_cn_name:
+          type: string
+        declared_en_name:
+          type: string
+        material:
+          type: string
+          description: The material of the product, used for customs clearance
+        use:
+          type: string
+          description: The use of the product, used for customs clearance
+        hs_code:
+          type: string
+          description: The HS code of the product
+        attribute:
+          type: string
+          description: |-
+            Logistics attribute, must be one of the following values: "General Cargo", "Battery Included/Magnetic", "Battery Only", "Special"
+        product_id:
+          type: integer
+          format: int32
+    oms.order.v3.CreateOrderRequest:
+      type: object
+      required:
+        - customer_order_number
+        - receiver_address
+        - items
+      properties:
+        customer_order_number:
+          type: string
+          description: The customer order number
+        receiver_address:
+          $ref: "#/components/schemas/oms.order.v3.Address"
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/oms.order.v3.CreateOrUpdateOrderItem"
+        order_type:
+          type: integer
+          description: The order type, 1 => Normal Order, 2 => Offline Order,  default is 1.
+          format: int32
+        warehouse_id:
+          type: integer
+          description: default 1, CN Warehouse
+          format: int32
+        order_placed_at:
+          type: string
+          description: The order placed time
+          format: date-time
+        tax_info:
+          allOf:
+            - $ref: "#/components/schemas/oms.order.v3.TaxInfo"
+          description: tax number, such as VAT/IOSS number
+        order_amount:
+          type: number
+          description: The order total amount
+          format: double
+        currency:
+          type: string
+          description: The order currency
+        extra_info:
+          $ref: "#/components/schemas/oms.order.v3.ExtraInfo"
+        note:
+          type: string
+          description: The order note
+    oms.order.v3.CreateOrderResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/oms.order.v3.CreateOrderResponse_Data"
+    oms.order.v3.CreateOrderResponse_Data:
+      type: object
+      properties:
+        order_number:
+          type: string
+    oms.order.v3.FeeDetail:
+      type: object
+      properties:
         fuel_fee:
           type: number
-          description: Fuel Fee
-          format: double
-        fulfillment_fee:
-          type: number
-          description: Shipping fee
-          format: double
-        handling_fee:
-          type: number
-          description: handling Fee
-          format: double
-        max_normal_days:
-          type: integer
-          description: Max Normal Days
-          format: int32
-        min_normal_days:
-          type: integer
-          description: Min Normal Days
-          format: int32
-        misc_fee:
-          type: number
-          description: Misc Fee
-          format: double
-        package_fee:
-          type: number
-          description: package Fee
+          description: Fuel additional fee
           format: double
         processing_fee:
           type: number
-          description: Processing Fee
+          description: Courier Processing fee
           format: double
         registration_fee:
           type: number
-          description: Registration Fee
+          description: Courier Registration fee
           format: double
-        total_price:
+        misc_fee:
           type: number
-          description: Total Fee
+          description: Courier Misc fee
+          format: double
+        base_freight_cost:
+          type: number
+          description: Courier Base Freight Cost
           format: double
         vat:
           type: number
           description: VAT
           format: double
-        volume_factor:
+        handling_fee:
+          type: number
+          description: Warehouse Handling fee
+          format: double
+    oms.order.v3.FeeInfo:
+      type: object
+      properties:
+        freight_cost:
+          type: number
+          format: double
+        handling_fee:
+          type: number
+          format: double
+        vat:
+          type: number
+          format: double
+        total_fee:
+          type: number
+          format: double
+    oms.order.v3.GetOrderDetailResponse:
+      type: object
+      properties:
+        code:
           type: integer
-          description: Volume Factor
           format: int32
-        volume_weight:
-          type: integer
-          description: Volume Weight(unit g)
-          format: int64
-      required:
-        - total_price
-        - currency
-        - fulfillment_fee
-        - fuel_fee
-        - processing_fee
-        - registration_fee
-        - misc_fee
-        - handling_fee
-        - package_fee
-        - vat
-        - charge_weight
-        - actual_weight
-        - volume_weight
-        - max_normal_days
-        - min_normal_days
-    HoldReason:
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/oms.order.v3.Order"
+    oms.order.v3.Order:
       type: object
       properties:
-        en_reason:
-          type: string
-          description: en reason
-        reason:
-          type: string
-          description: Hold Reason
-        type:
-          type: string
-          description: Hold Reason Type
-      description: Hold Reason
-    OrderItem:
-      type: object
-      properties:
-        barcode:
-          type: string
-          description: barcode
-        listing_sku:
-          type: string
-          description: Listing SKU
-        name:
-          type: string
-          description: Name
-        qty:
-          type: integer
-          description: Qty
-          format: int64
-        sku:
-          type: string
-          description: SKU
-      description: List Order Item
-    PlatformInfo:
-      type: object
-      properties:
-        cancelled_at:
-          type: string
-          description: Cancelled At
-        closed_at:
-          type: string
-          description: Closed At
-        created_at:
-          type: string
-          description: platform created at
-        fulfillment_status:
-          type: string
-          description: platform fulfillment status
-        not_accept_update:
-          type: boolean
-          description: not accept platform update
-        order_id:
-          type: string
-          description: platform order id
-        order_link:
-          type: string
-          description: Platform Order Link
-        order_no:
-          type: string
-          description: platform order no
-        paid_status:
-          type: string
-          description: Paid status
-        platform_status:
-          type: string
-          description: Platform Status
-        tags:
-          type: array
-          items:
-            type: string
-          description: platform tags
-    OrderListItemShipInfo:
-      type: object
-      properties:
-        shipping_country:
-          type: string
-          description: Shipping Country
-        shipping_name:
-          type: string
-          description: Shipping Name
-        zip_code:
-          type: string
-          description: Shipping Phone
-      description: Order List Item Ship Info
-    ListItem:
-      type: object
-      properties:
-        cancel_status:
-          type: integer
-          description: Cancel Status
-          format: int64
-        channel_id:
-          type: integer
-          description: Channel Id
-          format: int64
-        channel_name:
-          type: string
-          description: Channel Name
-        channel_options:
-          type: array
-          items:
-            $ref: "#/components/schemas/ChannelOption"
-          description: Channel Options
-        channel_type:
-          type: integer
-          description: Channel Type
-          enum:
-            - 1
-            - 2
-            - 3
-        channel_type_name:
-          type: string
-          description: Channel Type Name
-        created_at:
-          type: string
-          description: Created At
-        fee_info:
-          $ref: "#/components/schemas/OrderFeeDetail"
-        hold_reasons:
-          type: array
-          items:
-            $ref: "#/components/schemas/HoldReason"
-          description: Hold Reasons
-        hold_status:
-          type: boolean
-          description: Hold Status
-        items:
-          type: array
-          items:
-            $ref: "#/components/schemas/OrderItem"
-          description: Items
-        nss_tracking_number:
-          type: string
-          description: NSS Tracking Number
-        nss_tracking_url:
-          type: string
-          description: NSS Tracking URL
-        offline:
-          type: boolean
-          description: offline
         order_number:
           type: string
-          description: Order Number
-        platform:
+          description: The order number
+        customer_order_number:
           type: string
-          description: Platform
-        platform_info:
-          $ref: "#/components/schemas/PlatformInfo"
-        receiver_info:
-          $ref: "#/components/schemas/OrderListItemShipInfo"
-        request_shipping_date:
-          type: string
-          description: Request Shipping Date
-        ship_date:
-          type: string
-          description: Ship Date
-        status:
-          type: integer
-          description: Status
-          format: int64
-        status_name:
-          type: string
-          description: Status Name
-        store_id:
-          type: integer
-          description: Store Id
-          format: int64
+          description: customer order number
+        warehouse:
+          allOf:
+            - type: object
+              properties: {}
+          description: Warehouse
         store_name:
           type: string
           description: Store Name
+        source:
+          type: string
+          description: Order source
+        platform_created_at:
+          type: string
+          description: Order created time in client system
+          format: date-time
+        origin_order_status:
+          type: array
+          items:
+            type: string
+          description: Order status in client system
+        status:
+          type: string
+          description: Order status
+        exceptions:
+          type: array
+          items:
+            type: object
+            properties: {}
+          description: Order exceptions
+        cancellation_status:
+          enum:
+            - ORDER_CANCELLATION_STATUS_UNSPECIFIED
+            - ORDER_CANCELLATION_STATUS_REQUEST
+          type: string
+          description: Order cancellation status
+          format: enum
+        nss_tracking_no:
+          type: string
+          description: NextSmartShip tracking number
+        nss_tracking_url:
+          type: string
+          description: NextSmartShip tracking URL
+        shipping_requested_at:
+          type: string
+          description: Order shipping requested time
+          format: date-time
+        checkout_finished_at:
+          type: string
+          description: Order shipped time
+          format: date-time
+        selected_shipping_option:
+          allOf:
+            - type: object
+              properties: {}
+          description: Selected shipping option
+        shipping_options:
+          type: array
+          items:
+            type: object
+            properties: {}
+          description: Available shipping options
+        fee_info:
+          allOf:
+            - $ref: "#/components/schemas/oms.order.v3.FeeInfo"
+          description: Fee information
+        tax_info:
+          allOf:
+            - $ref: "#/components/schemas/oms.order.v3.TaxInfo"
+          description: tax number, such as VAT/IOSS number
+        receiver_address:
+          allOf:
+            - $ref: "#/components/schemas/oms.order.v3.Address"
+          description: Receiver address
+        order_items:
+          type: array
+          items:
+            $ref: "#/components/schemas/oms.order.v3.OrderItem"
+          description: Order items
+        note:
+          type: string
+          description: Order note, for client internal use only
+        package_status:
+          enum:
+            - PACKAGE_STATUS_UNSPECIFIED
+            - PACKAGE_STATUS_PREPARED
+            - PACKAGE_STATUS_IN_TRANSIT
+            - PACKAGE_STATUS_DELIVERED
+            - PACKAGE_STATUS_EXCEPTION
+          type: string
+          description: Package status
+          format: enum
         tags:
           type: array
           items:
             type: string
-          description: Tag
-        warehouse_id:
+          description: Order tags
+        platform_shipping_method:
+          type: string
+          description: Platform shipping method
+        fulfillment_pushed:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        extra_info:
+          $ref: "#/components/schemas/oms.order.v3.ExtraInfo"
+        order_type:
           type: integer
-          description: Warehouse Id
-          format: int64
-        warehouse_name:
-          type: string
-          description: Warehouse Name
-      description: Order List Item
-      required:
-        - tags
-    GetOrderListData:
-      type: object
-      properties:
-        list:
-          type: array
-          items:
-            $ref: "#/components/schemas/ListItem"
-          description: List
-        meta:
-          $ref: "#/components/schemas/MetaData"
-    GetOrderListResult:
-      type: object
-      properties:
-        code:
-          type: integer
-          description: code
-          format: int64
-        data:
-          $ref: "#/components/schemas/GetOrderListData"
-        message:
-          type: string
-          description: message
-      required:
-        - code
-        - message
-    ProductItem:
-      type: object
-      properties:
-        attributes:
-          type: array
-          items:
-            type: string
-          description: attributes
-        barcode:
-          type: string
-          description: barcode
-        declared_cn_name:
-          type: string
-          description: declared_cn_name
-        declared_en_name:
-          type: string
-          description: declare_en_name
-        declared_value_in_eur:
+          description: Order type, 1 => Normal Order, 2 => Offline Order,  default is 1.
+          format: int32
+        order_amount:
           type: number
-          description: declared_value_in_eur
+          description: Order amount
           format: double
-        declared_value_in_usd:
-          type: number
-          description: declared_value_in_usd
-          format: double
-        height:
-          type: integer
-          description: height
-          format: int64
-        id:
-          type: integer
-          description: id
-          format: int64
-        images:
+        currency:
+          type: string
+        fulfilled_by:
+          type: string
+          description: Fulfillment method
+        accept_platform_update:
+          type: string
+          description: Accept platform update
+        tracking_number:
+          type: string
+          description: Courier tracking number
+        last_mile_tracking_number:
+          type: string
+          description: Last mile tracking number
+        last_mile_tracking_url:
+          type: string
+          description: Last mile tracking URL
+        last_mile_service_provider:
+          type: string
+          description: Last mile service provider
+        post_back_infos:
           type: array
           items:
-            type: string
-          description: images
-        inbound_weight:
-          type: integer
-          description: inbound_ eight
-          format: int64
-        inventory:
-          type: integer
-          description: inventory
-          format: int64
-        length:
-          type: integer
-          description: length
-          format: int64
-        name:
-          type: string
-          description: name
-        sku:
-          type: string
-          description: sku
-        status:
-          type: integer
-          description: status
-          format: int64
-        weight:
-          type: integer
-          description: weight
-          format: int64
-        width:
-          type: integer
-          description: width
-          format: int64
-      description: ProductItem describes product item
-      required:
-        - id
-        - status
-        - barcode
-        - sku
-        - name
-        - attributes
-        - images
-        - inventory
-        - weight
-        - inbound_weight
-        - length
-        - width
-        - height
-        - declared_cn_name
-        - declared_en_name
-        - declared_value_in_usd
-        - declared_value_in_eur
-    ProductsQueryRsp:
+            $ref: "#/components/schemas/oms.order.v3.PostbackInfo"
+          description: Postback information
+    oms.order.v3.PostbackInfo:
       type: object
       properties:
-        code:
-          type: integer
-          description: code
-          format: int64
-        data:
-          $ref: "#/components/schemas/ProductsQueryData"
-        message:
-          type: string
-          description: message
-      required:
-        - code
-        - message
-    ProductsQueryData:
-      type: object
-      properties:
-        list:
-          type: array
-          items:
-            $ref: "#/components/schemas/ProductItem"
-          description: list
-        meta:
-          $ref: "#/components/schemas/MetaData"
-      description: ProductsQueryData describes the query products resp
-      required:
-        - list
-    CreateOmsOutboundOrderRequestBody:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            $ref: "#/components/schemas/OmsOrderItemCreateRequest"
-          description: order items
-          minItems: 1
-        mode:
-          type: integer
-          description: delivery mode(2 warehouse)
-          enum:
-            - 1
-            - 2
-            - 3
-        note:
-          type: string
-          description: note
-        offline:
-          type: boolean
-          description: offline
-        platform_order_no:
-          type: string
-          description: platform_order_no
-        receiver_info:
-          $ref: "#/components/schemas/ShippingAddress"
-        warehouse_id:
-          type: integer
-          description: warehouse
-          format: int64
-      required:
-        - mode
-        - offline
-        - warehouse_id
-        - receiver_info
-        - items
-    OmsOrderItemCreateRequest:
-      type: object
-      properties:
-        product_id:
-          type: integer
-          description: product id
-          default: 0
-          format: int64
-        declared_cn_name:
-          type: string
-          description: declared cn name
-        declared_en_name:
-          type: string
-          description: declared en name
-        declared_value_in_eur:
-          type: number
-          description: declared value in eur（€）
-          minimum: 0
-        declared_value_in_usd:
-          type: number
-          description: declared value in usd
-          minimum: 0
-        hs_code:
-          type: string
-          description: hs code
-        material:
-          type: string
-          description: Material
-          default: ""
-        name:
-          type: string
-          description: name
-        sku:
-          type: string
-          description: sku
-          default: ""
-        purpose:
-          type: string
-          description: Purpose
-          default: ""
-        qty:
-          type: integer
-          description: 产品数量
-          minimum: 1
-        requires_shipping:
-          type: boolean
-          description: requires shipping
-          default: true
-      required:
-        - name
-        - qty
-        - hs_code
-        - declared_value_in_usd
-        - declared_value_in_eur
-    OmsOrderResponse:
-      type: object
-      properties:
-        code:
-          type: integer
-          description: code
-          format: int64
-        data:
-          $ref: "#/components/schemas/OmsOrderRspData"
-        message:
-          type: string
-          description: message
-      required:
-        - code
-        - message
-    OmsOrderRspData:
-      type: object
-      properties:
-        order_number:
-          type: string
-          description: order number
-      required:
-        - order_number
-    BatchesCreateProductRequestBody:
-      type: object
-      properties:
-        products:
-          type: array
-          items:
-            $ref: "#/components/schemas/Product"
-          description: product info
-          minItems: 1
-      required:
-        - products
-    Error:
-      type: object
-      properties:
-        fault:
-          type: boolean
-          description: Is the error a server-side fault?
-        id:
-          type: string
-          description:
-            ID is a unique identifier for this particular occurrence of
-            the problem.
-        message:
-          type: string
-          description:
-            Message is a human-readable explanation specific to this occurrence
-            of the problem.
-        name:
-          type: string
-          description: Name is the name of this class of errors.
-        temporary:
-          type: boolean
-          description: Is the error temporary?
-        timeout:
-          type: boolean
-          description: Is the error a timeout?
-      required:
-        - name
-        - id
-        - message
-        - temporary
-        - timeout
-        - fault
-    MultiProductData:
-      type: object
-      properties:
-        barcode:
-          type: string
-          description: barcode
-        error_msg:
-          type: string
-          description: error msg
-        product_id:
-          type: integer
-          description: product id
-          format: int64
-        product_name:
-          type: string
-          description: product_name
-        sku:
-          type: string
-          description: sku
-        status:
-          type: string
-          description: status
-      description: MultiProductRsp describes the multi product info
-      required:
-        - product_id
-        - status
-        - error_msg
-        - barcode
-        - sku
-        - product_name
-    MultiProductInfo:
-      type: object
-      properties:
-        products:
-          type: array
-          items:
-            $ref: "#/components/schemas/MultiProductData"
-          description: product info
-      description: MultiProductRsp describes the multi product info
-      required:
-        - products
-    MultiProductRsp:
-      type: object
-      properties:
-        code:
-          type: integer
-          description: code
-          format: int64
-        data:
-          $ref: "#/components/schemas/MultiProductInfo"
-        message:
-          type: string
-          description: message
-      required:
-        - code
-        - message
-    OrderData:
-      type: object
-      properties:
-        customer_order_id:
-          type: string
-          description: customer order id
-          maxLength: 50
-        items:
-          type: array
-          items:
-            $ref: "#/components/schemas/OutboundOrderItem"
-          description: items
-        order_number:
-          type: string
-          description: outbound order number
-        status:
-          type: integer
-          description: order status
-          format: int64
         tracking_number:
           type: string
           description: tracking number
         tracking_url:
           type: string
           description: tracking url
-      required:
-        - customer_order_id
-        - status
-        - order_number
-        - tracking_number
-        - tracking_url
-        - items
-    OutboundOrderItem:
-      type: object
-      properties:
-        declared_cn_name:
-          type: string
-          description: declared cn name
-        declared_en_name:
-          type: string
-          description: declared en name
-        declared_value_in_eur:
-          type: number
-          description: declared value in eur（€）
-          minimum: 0
-        declared_value_in_usd:
-          type: number
-          description: declared value in usd
-          minimum: 0
-        ext_order_item_id:
-          type: string
-          description: Ext. order item id
-        ext_product_id:
-          type: string
-          description: Ext. order item id
-        hs_code:
-          type: string
-          description: hs code
-        material:
-          type: string
-          description: Material
-          default: ""
-        platform_product_id:
-          type: integer
-          description: Ext. order item id
-          format: int32
-        product_attributes:
-          type: array
-          items:
-            type: string
-          description: product attributes
-        product_barcode:
-          type: string
-          description: 产品barcode
-        product_height:
-          type: integer
-          description: product height
-          format: int64
-        product_length:
-          type: integer
-          description: product length
-          format: int64
-        product_name:
-          type: string
-          description: product name
-        product_price:
-          type: number
-          description: product price
-          format: double
-        product_sku:
-          type: string
-          description: product SKU
-        product_weight:
-          type: integer
-          description: product weight
-          format: int64
-        product_width:
-          type: integer
-          description: product width
-          format: int64
-        purpose:
-          type: string
-          description: Purpose
-          default: ""
-        qty:
-          type: integer
-          description: 产品数量
-          format: int64
-        requires_shipping:
-          type: boolean
-          description: requires shipping
-      required:
-        - product_name
-        - product_sku
-        - product_price
-        - qty
-        - hs_code
-        - declared_cn_name
-        - declared_en_name
-        - declared_value_in_usd
-        - product_weight
-        - product_length
-        - product_width
-        - product_height
-        - product_attributes
-        - product_barcode
-        - declared_value_in_eur
-    Product:
-      type: object
-      properties:
-        attributes:
-          type: array
-          items:
-            type: string
-          description: attributes
-        barcode:
-          type: string
-          description: barcode
-          maxLength: 50
-        barcode_service:
-          type: boolean
-          description: barcode_service
-          enum:
-            - false
-            - true
-        customer_code:
-          type: string
-          description: customer code
-          maxLength: 50
-        declared_cn_name:
-          type: string
-          description: declared cn name
-          maxLength: 50
-        declared_en_name:
-          type: string
-          description: declared en name
-          maxLength: 50
-        declared_value_in_eur:
-          type: number
-          description: declared value in eur（€）
-          minimum: 0
-        declared_value_in_usd:
-          type: number
-          description: declared value in usd（$）
-          minimum: 0
-        enabled_nss_barcode:
-          type: boolean
-          description: need use nss barcode
-          enum:
-            - false
-            - true
-        height:
-          type: number
-          description: height（mm）
-          format: double
-        hs_code:
-          type: string
-          description: hs code
-          maxLength: 50
-        id:
-          type: integer
-          description: id
-          minimum: 1
-        images:
-          type: array
-          items:
-            type: string
-          description: images
-        length:
-          type: number
-          description: length（mm）
-          format: double
-        material:
-          type: string
-          description: Material
-          default: ""
-        name:
-          type: string
-          description: name
-          maxLength: 50
-        purpose:
-          type: string
-          description: Purpose
-          default: ""
-        qty:
-          type: integer
-          description: quality
-          format: int64
-        sku:
-          type: string
-          description: sku
-          maxLength: 50
-        weight:
-          type: number
-          description: weight（g）
-          format: double
-        width:
-          type: number
-          description: width（mm）
-          format: double
-      description: Product describes the create product
-      required:
-        - sku
-        - name
-        - declared_en_name
-        - declared_cn_name
-        - declared_value_in_usd
-        - weight
-        - length
-        - width
-        - height
-        - hs_code
-        - barcode
-        - attributes
-        - customer_code
-        - declared_value_in_eur
-    ProductDetailData:
-      type: object
-      properties:
-        attributes:
-          type: array
-          items:
-            type: string
-          description: attributes
-        barcode:
-          type: string
-          description: barcode
-        barcode_service:
-          type: boolean
-          description: barcode_service
-        declared_cn_name:
-          type: string
-          description: declared_cn_name
-        declared_en_name:
-          type: string
-          description: declare_en_name
-        declared_value_in_eur:
-          type: number
-          description: declared_value_in_eur
-          format: double
-        declared_value_in_usd:
-          type: number
-          description: declared_value_in_usd
-          format: double
-        hs_code:
-          type: string
-          description: hs_code
-        id:
-          type: integer
-          description: id
-          format: int32
-        images:
-          type: array
-          items:
-            type: string
-          description: images
-        name:
-          type: string
-          description: name
-        sku:
-          type: string
-          description: sku
-        status:
-          type: integer
-          description: status
-          format: int64
-        weight:
-          type: number
-          description: weight
-          format: double
-      description: ProductItem describes product item
-      required:
-        - id
-        - status
-        - barcode
-        - sku
-        - name
-        - attributes
-        - images
-        - hs_code
-        - declared_cn_name
-        - declared_en_name
-        - declared_value_in_usd
-        - declared_value_in_eur
-        - barcode_service
-        - weight
-    ProductDetailRsp:
-      type: object
-      properties:
-        code:
-          type: integer
-          description: code
-          format: int64
-        data:
-          $ref: "#/components/schemas/ProductDetailData"
-        message:
-          type: string
-          description: message
-      required:
-        - code
-        - message
-    QueryOrderRsp:
-      type: object
-      properties:
-        code:
-          type: integer
-          description: code
-          format: int64
-        data:
-          $ref: "#/components/schemas/OrderData"
-        message:
-          type: string
-          description: message
-      required:
-        - code
-        - message
-    ShippingAddress:
-      type: object
-      properties:
-        address1:
-          type: string
-          description: Address Line 1
-        address2:
-          type: string
-          description: Address Line 2
-        certificate_code:
-          type: string
-          description: certificate code
-        certificate_period:
-          type: string
-          description: certificate period
-        certificate_type:
-          type: string
-          description: certificate type
-          enum:
-            - ID
-            - PP
-        city_name:
-          type: string
-          description: City Name
         company:
           type: string
-          description: company
-        country_code:
+          description: courier company
+        notify_buyer:
+          type: boolean
+          description: notify buyer
+        postback_status:
+          enum:
+            - PENDING
+            - SUCCESS
+            - FAILED
           type: string
-          description: Country code
-        country_name:
+          format: enum
+        failed_remark:
           type: string
-          description: Country Name
-        email:
+    oms.order.v3.OrderItem:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        order_id:
+          type: integer
+          format: int32
+        product_id:
+          type: integer
+          format: int32
+        listing_id:
+          type: integer
+          format: int32
+        sku:
           type: string
-          description: email
-        first_name:
+        quantity:
+          type: integer
+          format: int32
+        unit_price:
+          type: number
+          format: double
+        barcode:
           type: string
-          description: First name
-        last_name:
+        product_name:
           type: string
-          description: Last name
+        image_url:
+          type: string
+        attribute:
+          type: string
+        weight:
+          type: integer
+          format: int32
+        length:
+          type: integer
+          format: int32
+        width:
+          type: integer
+          format: int32
+        height:
+          type: integer
+          format: int32
+        declared_value_in_usd:
+          type: number
+          format: double
+        declared_cn_name:
+          type: string
+        declared_en_name:
+          type: string
+        hs_code:
+          type: string
+        material:
+          type: string
+        use:
+          type: string
+    oms.order.v3.ShippingOption:
+      type: object
+      properties:
+        channel_id:
+          type: integer
+          format: int32
+        route_id:
+          type: integer
+          format: int32
+        route_cn_name:
+          type: string
+        route_en_name:
+          type: string
+        route_cn_description:
+          type: string
+        route_en_description:
+          type: string
+        volume_factor:
+          type: integer
+          format: int32
+        actual_weight:
+          type: integer
+          format: int32
+        volume_weight:
+          type: integer
+          format: int32
+        charge_weight:
+          type: integer
+          format: int32
+        freight_cost:
+          type: number
+          format: double
+        ddu_or_ddp:
+          type: string
+        total_fee:
+          type: number
+          format: double
+        transit_time:
+          allOf:
+            - type: object
+              properties: {}
+        restriction:
+          allOf:
+            - type: object
+              properties: {}
+        duty_payment_method:
+          type: string
+          description: |-
+            DUTY_PAYMENT_METHOD_UNSPECIFIED;
+            PAYMENT_BY_CLIENT
+            FREE_DUTY
+            SHIPPING_INCLUDED
+            NSS_WITHHOLDING
+            TAX_NUMBER_OR_NSS_WITHHOLDING
+            TAX_NUMBER_OR_UNAVAILABLE
+            SURCHARGE_AFTER
+        fee_detail:
+          allOf:
+            - $ref: "#/components/schemas/oms.order.v3.FeeDetail"
+    oms.order.v3.Restriction:
+      type: object
+      properties:
+        max_length:
+          type: integer
+          format: int32
+        max_width:
+          type: integer
+          format: int32
+        max_height:
+          type: integer
+          format: int32
+        max_sum_of_three_edges:
+          type: integer
+          format: int32
+        combination_length_restriction1:
+          type: integer
+          format: int32
+        volume:
+          type: string
+        max_declared_value:
+          type: number
+          format: double
+        min_declared_value:
+          type: number
+          format: double
+    oms.order.v3.TransitTime:
+      type: object
+      properties:
+        first_transit_day:
+          type: integer
+          format: int32
+        first_transit_rate:
+          type: number
+          format: double
+        second_transit_day:
+          type: integer
+          format: int32
+        second_transit_rate:
+          type: number
+          format: double
+        third_transit_day:
+          type: integer
+          format: int32
+        third_transit_rate:
+          type: number
+          format: double
+    oms.order.v3.OrderException:
+      type: object
+      properties:
+        type:
+          type: string
+        code:
+          type: integer
+          format: int32
+        details:
+          type: array
+          items:
+            $ref: "#/components/schemas/oms.order.v3.OrderExceptionDetail"
+          description: Exception details
+    oms.order.v3.OrderExceptionDetail:
+      type: object
+      properties:
+        cn_description:
+          type: string
+        en_description:
+          type: string
+        product_id:
+          type: integer
+          format: int32
+    oms.order.v3.Warehouse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
         name:
           type: string
-          description: name
-        phone_number:
+    oms.order.v3.GetOrdersResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
           type: string
-          description: Phone number
-        state_code:
-          type: string
-          description: State code
-        state_name:
-          type: string
-          description: State Name
-        zip_code:
-          type: string
-          description: ZIP code
-      description: ShippingAddress describes the receiver address
-      required:
-        - first_name
-        - last_name
-        - phone_number
-        - country_name
-        - country_code
-        - state_name
-        - state_code
-        - address1
-        - address2
-        - city_name
-        - zip_code
-    MetaData:
+        data:
+          $ref: "#/components/schemas/oms.order.v3.OrderListData"
+    oms.order.v3.OrderListData:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            $ref: "#/components/schemas/oms.order.v3.Order"
+        meta:
+          $ref: "#/components/schemas/oms.order.v3.Meta"
+    oms.order.v3.Meta:
       type: object
       properties:
         current:
           type: integer
-          description: current
-          minimum: 1
+          format: int32
         page_size:
           type: integer
-          description: page_size
-          minimum: 1
+          format: int32
         total:
           type: integer
-          description: total
-          format: int64
-      description: MetaData describes the MetaData
-      required:
-        - current
-        - page_size
-        - total
-    SignupData:
-      type: object
-      properties:
-        token:
-          type: string
-          description: token
-      required:
-        - token
-    SignupRsp:
+          format: int32
+    oms.order.v3.UpdateOrderResponse:
       type: object
       properties:
         code:
           type: integer
-          description: code
-          format: int64
-        data:
-          $ref: "#/components/schemas/SignupData"
+          format: int32
         message:
           type: string
-          description: message
+    oms.product.v3.CreateProductRequest:
+      type: object
       required:
-        - code
-        - message
-    UserLoginRequestBody:
+        - sku
+      properties:
+        sku:
+          type: string
+          description: SKU must be 1 - 20 characters long and only contain letters, digits, dashes and spaces
+        barcode:
+          type: string
+          description: Barcode, must be 5 - 13 characters long and only contain letters and digits
+        name:
+          type: string
+          description: Name
+        image_url:
+          type: string
+          description: Image url
+        claimed_length:
+          type: integer
+          description: Claimed length (mm)
+          format: int32
+        claimed_width:
+          type: integer
+          description: Claimed width (mm)
+          format: int32
+        claimed_height:
+          type: integer
+          description: Claimed height (mm)
+          format: int32
+        claimed_weight:
+          type: integer
+          description: Claimed weight (g)
+          format: int32
+        declared_cn_name:
+          type: string
+          description: Declared chinese name
+        declared_en_name:
+          type: string
+          description: Declared english name
+        declared_value_in_usd:
+          type: number
+          description: Declared value in USD
+          format: double
+        hs_code:
+          type: string
+          description: HS code, must be 6 - 10 characters long and only contain letters and digits
+        logistics_attribute:
+          type: string
+          description: |-
+            Logistics attribute, must be one of the following values: "General Cargo", "Battery Included/Magnetic", "Battery Only", "Special"
+        labeling_service:
+          type: boolean
+          description: Labeling Service, default is false
+        material:
+          type: string
+          description: Material, Used for customs clearance
+        use:
+          type: string
+          description: Use, Used for customs clearance
+        virtual:
+          type: boolean
+          description: virtual product, default is false
+        packaging_material:
+          type: boolean
+          description: packaging material, default is false
+    oms.product.v3.CreateProductResponse:
       type: object
       properties:
-        email:
+        code:
+          type: integer
+          format: int32
+        message:
           type: string
-          description: user login email
-        password:
+        data:
+          $ref: "#/components/schemas/oms.product.v3.CreateProductResponse_Data"
+    oms.product.v3.CreateProductResponse_Data:
+      type: object
+      properties:
+        product_id:
+          type: integer
+          format: int32
+    oms.product.v3.DeleteProductResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
           type: string
-          description: user login password
-      required:
-        - email
-        - password
+    oms.product.v3.GetProductResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/oms.product.v3.Product"
+    oms.product.v3.Product:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID
+          format: int32
+        barcode:
+          type: string
+          description: Barcode
+        sku:
+          type: string
+          description: SKU
+        name:
+          type: string
+          description: Name
+        image_url:
+          type: string
+          description: Image url
+        claimed_length:
+          type: integer
+          description: Claimed length (mm)
+          format: int32
+        claimed_width:
+          type: integer
+          description: Claimed width (mm)
+          format: int32
+        claimed_height:
+          type: integer
+          description: Claimed height (mm)
+          format: int32
+        claimed_weight:
+          type: integer
+          description: Claimed weight (g)
+          format: int32
+        measured_length:
+          type: integer
+          description: Measured length (mm)
+          format: int32
+        measured_width:
+          type: integer
+          description: Measured width (mm)
+          format: int32
+        measured_height:
+          type: integer
+          description: Measured height (mm)
+          format: int32
+        measured_weight:
+          type: integer
+          description: Measured weight (g)
+          format: int32
+        declared_cn_name:
+          type: string
+          description: Declared chinese name
+        declared_en_name:
+          type: string
+          description: Declared english name
+        declared_value_in_usd:
+          type: number
+          description: Declared value in USD
+          format: double
+        hs_code:
+          type: string
+          description: HS code
+        logistics_attribute:
+          type: string
+          description: Logistics attribute
+        labeling_service:
+          type: boolean
+          description: Labeling Service
+        material:
+          type: string
+          description: Material
+        use:
+          type: string
+          description: Use
+        status:
+          type: string
+          description: Status
+        virtual:
+          type: boolean
+          description: virtual product
+        packaging_material:
+          type: boolean
+          description: packaging material
+        to_sync:
+          type: boolean
+          description: to_sync
+      description: Product
+    oms.product.v3.ListProductsResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/oms.product.v3.ListProductsResponse_Data"
+    oms.product.v3.ListProductsResponse_Data:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            $ref: "#/components/schemas/oms.product.v3.Product"
+        meta:
+          $ref: "#/components/schemas/type.v1.Pagination"
+    oms.product.v3.UpdateProductRequest:
+      type: object
+      properties:
+        barcode:
+          type: string
+          description: Barcode, must be 5 - 20 characters long and only contain letters, digits, dashes and spaces
+        sku:
+          type: string
+          description: SKU must be 1 - 20 characters long and only contain letters, digits, dashes and spaces
+        name:
+          type: string
+          description: Name
+        image_url:
+          type: string
+          description: Image url
+        claimed_length:
+          type: integer
+          description: Claimed length (mm)
+          format: int32
+        claimed_width:
+          type: integer
+          description: Claimed width (mm)
+          format: int32
+        claimed_height:
+          type: integer
+          description: Claimed height (mm)
+          format: int32
+        claimed_weight:
+          type: integer
+          description: Claimed weight (g)
+          format: int32
+        declared_cn_name:
+          type: string
+          description: Declared chinese name
+        declared_en_name:
+          type: string
+          description: Declared english name
+        declared_value_in_usd:
+          type: number
+          description: Declared value in USD
+          format: double
+        hs_code:
+          type: string
+          description: HS code, must be 6 - 16 characters long and only contain numbers and dots
+        logistics_attribute:
+          type: string
+          description: Logistics attribute
+        labeling_service:
+          type: boolean
+          description: Labeling Service
+        material:
+          type: string
+          description: Material
+        use:
+          type: string
+          description: Use
+        virtual:
+          type: boolean
+          description: virtual product
+        packaging_material:
+          type: boolean
+          description: packaging material
+    oms.product.v3.UpdateProductResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+    tms.track.v1.GetNSSTracksRequest:
+      type: object
+      properties:
+        search:
+          type: array
+          items:
+            type: string
+          description: NSS tracking number
+    tms.track.v1.GetNSSTracksResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/tms.track.v1.GetNSSTracksResponse_Data"
+    tms.track.v1.GetNSSTracksResponse_Data:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            $ref: "#/components/schemas/tms.track.v1.GetNSSTracksResponse_Track"
+    tms.track.v1.GetNSSTracksResponse_Track:
+      type: object
+      properties:
+        tracking_number:
+          type: string
+          description: Tracking number
+        tracking_url:
+          type: string
+          description: Tracking URL
+        track_detail:
+          allOf:
+            - $ref: "#/components/schemas/tms.track.v1.Track_TrackDetail"
+          description: Track detail
+        origin_country:
+          type: string
+          description: Origin country
+        destination_country:
+          type: string
+          description: Destination country
+        transport_cost_time:
+          type: string
+          description: Transport cost time
+        last_mile_service_provider:
+          type: string
+          description: Last mile service provider
+        last_mile_tracking_number:
+          type: string
+          description: Last mile tracking number
+        last_mile_tracking_url:
+          type: string
+          description: Last mile tracking URL
+    tms.track.v1.Track_TrackDetail:
+      type: object
+      properties:
+        status:
+          enum:
+            - TRACK_STATUS_UNKNOWN
+            - TRACK_STATUS_RECEIVED
+            - TRACK_STATUS_IN_TRANSIT
+            - TRACK_STATUS_DELIVERED
+            - TRACK_STATUS_EXCEPTION
+          type: string
+          description: Track status
+          format: enum
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/tms.track.v1.TrackDetail_Item"
+        key_items:
+          type: array
+          items:
+            $ref: "#/components/schemas/tms.track.v1.TrackDetail_KeyItem"
+    tms.track.v1.TrackDetail_KeyItem:
+      type: object
+      properties:
+        status:
+          enum:
+            - TRACK_STATUS_UNKNOWN
+            - TRACK_STATUS_RECEIVED
+            - TRACK_STATUS_IN_TRANSIT
+            - TRACK_STATUS_DELIVERED
+            - TRACK_STATUS_EXCEPTION
+          type: string
+          description: Track status
+          format: enum
+        timestamp:
+          type: string
+          format: date-time
+    tms.track.v1.TrackDetail_Item:
+      type: object
+      properties:
+        content:
+          type: string
+          description: Track node content
+        timestamp:
+          type: string
+          format: date-time
   securitySchemes:
-    jwt_header_Authorization:
+    BearerAuth:
       type: http
-      description:
-        Secures endpoint by requiring a valid JWT token retrieved via the
-        signin endpoint
       scheme: bearer
-tags:
-  - name: order
-    description: The order service performs operations on order
-  - name: product
-    description: The product service performs operations on product
-  - name: user
-    description: The user service performs operations on user
+servers:
+  - url: https://sandbox-api.nextsmartship.com
+    description: Sandbox Envirnoment
