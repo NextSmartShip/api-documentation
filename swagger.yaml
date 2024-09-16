@@ -221,30 +221,6 @@ paths:
           headers: {}
       security:
         - BearerAuth: []
-    delete:
-      description: Delete Product
-      operationId: ProductService_DeleteProduct
-      tags:
-        - ProductService
-      parameters:
-        - name: id
-          in: path
-          description: id
-          required: true
-          example: 0
-          schema:
-            type: integer
-            format: int32
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/oms.product.v3.DeleteProductResponse"
-          headers: {}
-      security:
-        - BearerAuth: []
   /oms/v3/orders:
     get:
       description: Get Orders
@@ -2058,14 +2034,6 @@ components:
         product_id:
           type: integer
           format: int32
-    oms.product.v3.DeleteProductResponse:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-        message:
-          type: string
     oms.product.v3.GetProductResponse:
       type: object
       properties:
@@ -2362,4 +2330,6 @@ components:
       scheme: bearer
 servers:
   - url: https://sandbox-api.nextsmartship.com
-    description: Sandbox Envirnoment
+    description: Sandbox Envirnomen
+  - url: https://api.nextsmartship.com
+    description: Production Envirnoment
