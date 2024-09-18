@@ -50,8 +50,6 @@ paths:
                     type: string
                   expires_in:
                     type: integer
-                  refresh_token:
-                    type: string
                   token_type:
                     type: string
               examples:
@@ -60,7 +58,6 @@ paths:
                   value:
                     access_token: eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJ0ZW5hbnRfaWQiOiIxNjMiLCJzdWIiOiJOMTIz...
                     expires_in: 86400
-                    refresh_token: NTRLOWVKMTATZGUYMC01NME3LTK2N2QTNTM0ODQ5MJL...
                     token_type: Bearer
           headers: {}
         "401":
