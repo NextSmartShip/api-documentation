@@ -220,8 +220,8 @@ paths:
         - BearerAuth: []
   /oms/v3/orders:
     get:
-      description: Get Orders
-      operationId: OrderService_GetOrders
+      description: List Orders
+      operationId: OrderService_ListOrders
       tags:
         - OrderService
       parameters:
