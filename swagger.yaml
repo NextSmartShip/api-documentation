@@ -9,6 +9,7 @@ tags:
   - name: InventoryService
   - name: BillingService
   - name: TrackService
+  - name: WebhookService
 paths:
   /oauth/token:
     post:
@@ -845,6 +846,116 @@ paths:
                 $ref: "#/components/schemas/tms.track.v1.GetNSSTracksResponse"
           headers: {}
       security: []
+  /oms/v3/webhooks:
+    get:
+      summary: /oms/v3/webhooks
+      deprecated: false
+      description: Get Webhooks
+      operationId: WebhookService_ListWebhook
+      tags:
+        - WebhookService
+      parameters: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/oms.account.v3.ListWebhookResponse"
+    post:
+      summary: /oms/v3/webhooks
+      deprecated: false
+      description: subcribe to a webhook
+      operationId: WebhookService_CreateWebhook
+      tags:
+        - WebhookService
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/oms.account.v3.CreateWebhookRequest"
+            example: ""
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/oms.account.v3.CreateWebhookResponse"
+  /oms/v3/webhooks/{id}:
+    get:
+      summary: /oms/v3/webhooks/{id}
+      deprecated: false
+      description: Get webhook by id
+      operationId: WebhookService_GetWebhook
+      tags:
+        - WebhookService
+      parameters:
+        - name: id
+          in: path
+          description: ""
+          required: true
+          example: ""
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/oms.account.v3.GetWebhookResponse"
+    put:
+      summary: /oms/v3/webhooks/{id}
+      deprecated: false
+      description: update webhook
+      operationId: WebhookService_UpdateWebhook
+      tags:
+        - WebhookService
+      parameters:
+        - name: id
+          in: path
+          description: ""
+          required: true
+          example: ""
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/oms.account.v3.UpdateWebhookRequest"
+            example: ""
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/oms.account.v3.UpdateWebhookResponse"
+    delete:
+      summary: /oms/v3/webhooks/{id}
+      deprecated: false
+      description: delete webhook
+      operationId: WebhookService_DeleteWebhook
+      tags:
+        - WebhookService
+      parameters:
+        - name: id
+          in: path
+          description: ""
+          required: true
+          example: ""
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/oms.account.v3.DeleteWebhookResponse"
 components:
   schemas:
     oms.billing.v3.AsnTransactionStatistics:
@@ -2321,6 +2432,88 @@ components:
         timestamp:
           type: string
           format: date-time
+    oms.account.v3.DeleteWebhookResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          type: integer
+          format: int32
+    oms.account.v3.UpdateWebhookResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/oms.account.v3.Webhook"
+    oms.account.v3.Webhook:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        endpoint:
+          type: string
+        topic:
+          type: string
+    oms.account.v3.UpdateWebhookRequest:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        endpoint:
+          type: string
+        topic:
+          type: string
+    oms.account.v3.GetWebhookResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/oms.account.v3.Webhook"
+    oms.account.v3.CreateWebhookResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/oms.account.v3.Webhook"
+    oms.account.v3.CreateWebhookRequest:
+      type: object
+      properties:
+        endpoint:
+          type: string
+          required: true
+        topic:
+          type: string
+          required: true
+    oms.account.v3.ListWebhookResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/oms.account.v3.Webhook"
   securitySchemes:
     BearerAuth:
       type: http
