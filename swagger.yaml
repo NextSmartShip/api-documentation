@@ -2515,181 +2515,183 @@ components:
           items:
             $ref: "#/components/schemas/oms.account.v3.Webhook"
 
-    order.shipped:
+    webhook.event:
       type: object
       properties:
         id:
           type: string
-          example: "ORDER-SHIPPED001631730962965502016000"
+          example: "001631730962965502016000"
         topic:
           type: string
           example: "order.shipped"
         data:
+          $ref: "#/components/schemas/order.shipped"
+    order.shipped:
+      type: object
+      properties:
+        order_number:
+          type: string
+          example: "999999999999"
+        customer_order_number:
+          type: string
+          example: "8888888888888"
+        status:
+          type: string
+          example: "fulfilled"
+        created_at:
+          type: string
+          format: date-time
+          example: "2024-10-18T07:48:05Z"
+        shipping_requested_at:
+          type: string
+          format: date-time
+          example: "2024-10-21T02:34:18Z"
+        warehouse:
           type: object
           properties:
-            order_number:
+            id:
+              type: integer
+              example: 1
+            name:
               type: string
-              example: "999999999999"
-            customer_order_number:
+              example: "CN Warehouse"
+        receiver_address:
+          type: object
+          properties:
+            first_name:
               type: string
-              example: "8888888888888"
-            status:
+            last_name:
               type: string
-              example: "fulfilled"
-            created_at:
+            company:
               type: string
-              format: date-time
-              example: "2024-10-18T07:48:05Z"
-            shipping_requested_at:
+            address1:
               type: string
-              format: date-time
-              example: "2024-10-21T02:34:18Z"
-            warehouse:
-              type: object
-              properties:
-                id:
-                  type: integer
-                  example: 1
-                name:
-                  type: string
-                  example: "CN Warehouse"
-            receiver_address:
-              type: object
-              properties:
-                first_name:
-                  type: string
-                last_name:
-                  type: string
-                company:
-                  type: string
-                address1:
-                  type: string
-                address2:
-                  type: string
-                city:
-                  type: string
-                state:
-                  type: string
-                state_code:
-                  type: string
-                zip_code:
-                  type: string
-                country_code:
-                  type: string
-                country:
-                  type: string
-                phone:
-                  type: string
-                email:
-                  type: string
-            order_items:
-              type: array
-              items:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                    example: 8025960
-                  product_id:
-                    type: integer
-                    example: 1873812
-                  sku:
-                    type: string
-                    example: "TEST001"
-                  quantity:
-                    type: integer
-                    example: 1
-                  barcode:
-                    type: string
-                    example: "N0000163004C"
-                  product_name:
-                    type: string
-                    example: "TEST001"
-                  image_url:
-                    type: string
-                    example: ""
-                  attribute:
-                    type: string
-                    example: "General Cargo"
-                  weight:
-                    type: integer
-                    example: 320
-                  length:
-                    type: integer
-                    example: 340
-                  width:
-                    type: integer
-                    example: 190
-                  height:
-                    type: integer
-                    example: 34
-                  declared_value_in_usd:
-                    type: number
-                    format: float
-                    example: 1.0
-                  declared_cn_name:
-                    type: string
-                    example: "测试"
-                  declared_en_name:
-                    type: string
-                    example: "TEST"
-                  hs_code:
-                    type: string
-                    example: "1111111"
-                  material:
-                    type: string
-                    example: ""
-                  use:
-                    type: string
-                    example: ""
-            packages:
-              type: array
-              items:
-                type: object
-                properties:
-                  nss_tracking_no:
-                    type: string
-                    example: "NSS7876335041944414208"
-                  nss_tracking_url:
-                    type: string
-                    example: "https://fulfillship.nextsmartship.com/track?s=NSS7876335041944414208"
-                  tracking_number:
-                    type: string
-                    example: "SF7444490625666"
-                  last_mile_tracking_number:
-                    type: string
-                    example: ""
-                  last_mile_tracking_url:
-                    type: string
-                    example: ""
-                  last_mile_service_provider:
-                    type: string
-                    example: ""
-                  fulfilled_by:
-                    type: string
-                    example: "nss"
-                  weight:
-                    type: integer
-                    example: 320
-                  height:
-                    type: integer
-                    example: 10
-                  width:
-                    type: integer
-                    example: 10
-                  length:
-                    type: integer
-                    example: 10
-                  charge_weight:
-                    type: integer
-                    example: 320
-                  shipped_at:
-                    type: string
-                    format: date-time
-                    example: "2024-10-21T04:10:35Z"
-                  shipping_cost:
-                    type: number
-                    format: float
+            address2:
+              type: string
+            city:
+              type: string
+            state:
+              type: string
+            state_code:
+              type: string
+            zip_code:
+              type: string
+            country_code:
+              type: string
+            country:
+              type: string
+            phone:
+              type: string
+            email:
+              type: string
+        order_items:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                example: 8025960
+              product_id:
+                type: integer
+                example: 1873812
+              sku:
+                type: string
+                example: "TEST001"
+              quantity:
+                type: integer
+                example: 1
+              barcode:
+                type: string
+                example: "N0000163004C"
+              product_name:
+                type: string
+                example: "TEST001"
+              image_url:
+                type: string
+                example: ""
+              attribute:
+                type: string
+                example: "General Cargo"
+              weight:
+                type: integer
+                example: 320
+              length:
+                type: integer
+                example: 340
+              width:
+                type: integer
+                example: 190
+              height:
+                type: integer
+                example: 34
+              declared_value_in_usd:
+                type: number
+                format: float
+                example: 1.0
+              declared_cn_name:
+                type: string
+                example: "测试"
+              declared_en_name:
+                type: string
+                example: "TEST"
+              hs_code:
+                type: string
+                example: "1111111"
+              material:
+                type: string
+                example: ""
+              use:
+                type: string
+                example: ""
+        packages:
+          type: array
+          items:
+            type: object
+            properties:
+              nss_tracking_no:
+                type: string
+                example: "NSS7876335041944414208"
+              nss_tracking_url:
+                type: string
+                example: "https://fulfillship.nextsmartship.com/track?s=NSS7876335041944414208"
+              tracking_number:
+                type: string
+                example: "SF7444490625666"
+              last_mile_tracking_number:
+                type: string
+                example: ""
+              last_mile_tracking_url:
+                type: string
+                example: ""
+              last_mile_service_provider:
+                type: string
+                example: ""
+              fulfilled_by:
+                type: string
+                example: "nss"
+              weight:
+                type: integer
+                example: 320
+              height:
+                type: integer
+                example: 10
+              width:
+                type: integer
+                example: 10
+              length:
+                type: integer
+                example: 10
+              charge_weight:
+                type: integer
+                example: 320
+              shipped_at:
+                type: string
+                format: date-time
+                example: "2024-10-21T04:10:35Z"
+              shipping_cost:
+                type: number
+                format: float
   securitySchemes:
     BearerAuth:
       type: http
