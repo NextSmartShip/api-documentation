@@ -2697,7 +2697,5 @@ components:
       type: http
       scheme: bearer
 servers:
-  - url: https://sandbox-api.nextsmartship.com
-    description: Sandbox Envirnomen
   - url: https://api.nextsmartship.com
     description: Production Envirnoment
