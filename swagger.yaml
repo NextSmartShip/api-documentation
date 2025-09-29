@@ -2078,6 +2078,9 @@ components:
         image_url:
           type: string
           description: Image url
+        sales_url:
+          type: string
+          description:
         claimed_length:
           type: integer
           description: Claimed length (mm)
@@ -2100,9 +2103,13 @@ components:
         declared_en_name:
           type: string
           description: Declared english name
+        declared_value_for_us:
+          type: number
+          description: Declared value for US, must be a positive number
+          format: double
         declared_value_in_usd:
           type: number
-          description: Declared value in USD
+          description: Declared value in USD, must be a positive number
           format: double
         hs_code:
           type: string
@@ -2171,6 +2178,9 @@ components:
         image_url:
           type: string
           description: Image url
+        sales_url:
+          type: string
+          description: Sales url
         claimed_length:
           type: integer
           description: Claimed length (mm)
@@ -2209,6 +2219,10 @@ components:
         declared_en_name:
           type: string
           description: Declared english name
+        declared_value_for_us:
+          type: number
+          description: Declared value for US
+          format: double
         declared_value_in_usd:
           type: number
           description: Declared value in USD
